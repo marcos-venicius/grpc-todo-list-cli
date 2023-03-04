@@ -1,53 +1,34 @@
-# grpc-todo-list-live
+# Todo list as CLI
+
+<div align="center">
+  <img src="./docs/images/structure.png">
+</div>
 
 A simple grpc todo list on live. your todo list as CLI
 
 ## How to run on your machine?
 
 - you need to install [.NET 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
+- you need to have [Docker](https://www.docker.com/) installed (latest version)
 
-to run and test the application, first build the solution.
+build project to generate the proto files as c# classes
 
 ```bash
 dotnet build
 ```
 
-after build the solution the proto files will be "transformed" into csharp classes and will be accessible to you on csharp code.
-
-to run the server project
+up all docker containers **not available yet**
 
 ```bash
-cd ./Server
+docker compose up -d
+```
+
+run the server to accept the connections
+
+```bash
+cd GrpcTodo.Server
 ```
 
 ```bash
 dotnet run -lp https
 ```
-
-this will run the application on https profile
-
-to the the application with the client
-
-
-```bash
-cd ./Client
-```
-
-you have two options to run the client.
-
-- As CLI, using the [available commands list](#available-commands-list)
-
-```bash
-dotnet run <command>
-```
-
-- As a normal program
-
-```bash
-dotnet run
-```
-
-### Available commands list
-
-- `lt` list todos. this will list all your todos
-- `ct` create todo. this command allow you to create a todo.
