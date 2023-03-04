@@ -1,6 +1,6 @@
-﻿using Client.Enums;
-using Client.Models;
-using Client.Utils;
+﻿using GrpcTodo.CLI.Enums;
+using GrpcTodo.CLI.Models;
+using GrpcTodo.CLI.Utils;
 
 public static class Program
 {

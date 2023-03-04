@@ -1,4 +1,4 @@
-namespace Client.Utils;
+namespace GrpcTodo.CLI.Utils;
 
 internal static class ConsoleReader
 {

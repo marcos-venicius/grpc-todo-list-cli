@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-option csharp_namespace = "SharedKernel.Protos.User.Responses";
-
-package user.responses;
-
-message UserCreateResponse {
-    string token = 1;
-}

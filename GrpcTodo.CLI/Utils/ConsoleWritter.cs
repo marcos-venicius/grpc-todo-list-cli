@@ -1,4 +1,4 @@
-namespace Client.Utils;
+namespace GrpcTodo.CLI.Utils;
 
 public static class ConsoleWritter
 {

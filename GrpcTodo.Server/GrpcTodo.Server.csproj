@@ -7,18 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="../SharedKernel/Protos/user/service.proto" />
-    <Protobuf Include="../SharedKernel/Protos/user/requests.proto" />
-    <Protobuf Include="../SharedKernel/Protos/user/responses.proto" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.49.0" />
     <PackageReference Include="System.Threading" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../SharedKernel/SharedKernel.csproj" />
+    <ProjectReference Include="../GrpcTodo.SharedKernel/GrpcTodo.SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

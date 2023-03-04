@@ -1,4 +1,4 @@
-namespace Client.Exceptions;
+namespace GrpcTodo.CLI.Exceptions;
 
 internal class InvalidOptionException : ApplicationException
 {

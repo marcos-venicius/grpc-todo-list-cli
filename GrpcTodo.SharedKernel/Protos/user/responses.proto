@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package grpc_todo.shared_kernel.protos.user.responses;
+
+message UserCreateResponse {
+    string token = 1;
+}

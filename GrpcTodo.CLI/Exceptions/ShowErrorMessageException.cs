@@ -1,4 +1,4 @@
-namespace Client.Exceptions;
+namespace GrpcTodo.CLI.Exceptions;
 
 public class ShowErrorMessageException : ApplicationException
 {

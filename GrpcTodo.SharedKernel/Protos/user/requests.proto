@@ -1,8 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "SharedKernel.Protos.User.Requests";
-
-package user.requests;
+package grpc_todo.shared_kernel.protos.user.requests;
 
 message UserCreateRequest {
     string name = 1;

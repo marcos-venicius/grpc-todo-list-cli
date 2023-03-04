@@ -1,4 +1,4 @@
-using Client.Enums;
+using GrpcTodo.CLI.Enums;
 
 internal static class ActionRunner
 {

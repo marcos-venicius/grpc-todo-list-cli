@@ -1,4 +1,4 @@
-namespace Client.Enums;
+namespace GrpcTodo.CLI.Enums;
 
 public enum ActionType
 {

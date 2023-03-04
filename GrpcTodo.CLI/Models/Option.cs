@@ -1,6 +1,6 @@
-using Client.Enums;
+using GrpcTodo.CLI.Enums;
 
-namespace Client.Models;
+namespace GrpcTodo.CLI.Models;
 
 public class Option
 {
