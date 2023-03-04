@@ -17,7 +17,7 @@ build project to generate the proto files as c# classes
 dotnet build
 ```
 
-up all docker containers **not available yet**
+up all docker containers
 
 ```bash
 docker compose up -d

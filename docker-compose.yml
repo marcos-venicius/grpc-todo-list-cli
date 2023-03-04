@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  postgresql:
+    container_name: grpc-todo-cli
+
+    image: postgres:15-alpine
+
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: todo_list
+
+    networks:
+      - grpc-todo-cli-network
+
+    ports:
+      - "127.0.0.1:5432:5432"
+
+    volumes:
+      - grpc-todo-cli-postgres:/var/lib/postgresql/data
+
+networks:
+  grpc-todo-cli-network:
+    driver: bridge
+
+volumes:
+  grpc-todo-cli-postgres:
