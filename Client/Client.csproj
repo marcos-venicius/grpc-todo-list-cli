@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="../SharedKernel/Protos/todo.proto" />
+    <Protobuf Include="../SharedKernel/Protos/user/service.proto" />
+    <Protobuf Include="../SharedKernel/Protos/user/requests.proto" />
+    <Protobuf Include="../SharedKernel/Protos/user/responses.proto" />
   </ItemGroup>
 
   <ItemGroup>

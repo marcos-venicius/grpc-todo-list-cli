@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option csharp_namespace = "SharedKernel.Protos.User.Requests";
+
+package user.requests;
+
+message UserCreateRequest {
+    string name = 1;
+    string password = 2;
+}
