@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+
+service Todo {
+    rpc Create(CreateTodoRequest) returns (CreateTodoResponse);
+    rpc List(google.protobuf.Empty) returns (TodoList);
+}
+
+enum TodoItemState {
+    UNCOMPLETED = 0;
+    COMPLETED = 1;
+}
+
+message TodoItem {
+    string id = 1;
+    string name = 2;
+    optional string description = 3;
+    TodoItemState state = 4;
+}
+
+message TodoList {
+    repeated TodoItem Items = 1;
+}
+
+message CreateTodoRequest {
+    string name = 1;
+    optional string description = 2;
+}
+
+message CreateTodoResponse {
+    string id = 1;
+}
