@@ -1,6 +1,6 @@
 namespace GrpcTodo.CLI.Enums;
 
-public enum ActionType
+public enum Command
 {
     CreateAccount,
     Login,

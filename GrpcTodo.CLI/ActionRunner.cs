@@ -2,31 +2,31 @@ using GrpcTodo.CLI.Enums;
 
 internal static class ActionRunner
 {
-    public static void Run(ActionType? action)
+    public static void Run(Command? action)
     {
         switch (action)
         {
             case null:
                 return;
-            case ActionType.CreateAccount:
+            case Command.CreateAccount:
                 Console.WriteLine("create user account");
                 break;
-            case ActionType.Login:
+            case Command.Login:
                 Console.WriteLine("make user login");
                 break;
-            case ActionType.ListAllTasks:
+            case Command.ListAllTasks:
                 Console.WriteLine("list all tasks");
                 break;
-            case ActionType.CreateTask:
+            case Command.CreateTask:
                 Console.WriteLine("create task");
                 break;
-            case ActionType.CompleteTask:
+            case Command.CompleteTask:
                 Console.WriteLine("complete task");
                 break;
-            case ActionType.UncompleteTask:
+            case Command.UncompleteTask:
                 Console.WriteLine("uncomplete task");
                 break;
-            case ActionType.DeleteTask:
+            case Command.DeleteTask:
                 Console.WriteLine("delete task");
                 break;
         }

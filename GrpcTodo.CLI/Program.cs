@@ -1,5 +1,6 @@
 ﻿using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Models;
+using GrpcTodo.CLI.Services;
 using GrpcTodo.CLI.Utils;
 
 public static class Program
@@ -11,31 +12,31 @@ public static class Program
             Children = new () {
                 new Option {
                     Path = "create",
-                    Action = ActionType.CreateTask,
+                    Action = Command.CreateTask,
                     Name = "create a new task",
                     Children = new()
                 },
                 new Option {
                     Path = "complete",
-                    Action = ActionType.CompleteTask,
+                    Action = Command.CompleteTask,
                     Name = "complete task",
                     Children = new()
                 },
                 new Option {
                     Path = "uncomplete",
-                    Action = ActionType.UncompleteTask,
+                    Action = Command.UncompleteTask,
                     Name = "uncomplete task",
                     Children = new()
                 },
                 new Option {
                     Path = "list",
-                    Action = ActionType.ListAllTasks,
+                    Action = Command.ListAllTasks,
                     Name = "list all tasks",
                     Children = new()
                 },
                 new Option {
                     Path = "delete",
-                    Action = ActionType.DeleteTask,
+                    Action = Command.DeleteTask,
                     Name = "delete a task",
                     Children = new()
                 },
@@ -48,12 +49,12 @@ public static class Program
                 new Option {
                     Name = "create account",
                     Path = "create",
-                    Action = ActionType.CreateAccount,
+                    Action = Command.CreateAccount,
                     Children = new ()
                 },
                 new Option {
                     Path = "login",
-                    Action = ActionType.Login,
+                    Action = Command.Login,
                     Name = "make login",
                     Children = new()
                 }
@@ -61,7 +62,7 @@ public static class Program
         },
     };
 
-    private static ActionType? ReadNaturalLanguageCommand(string[] args)
+    private static Command? ReadNaturalLanguageCommand(string[] args)
     {
         var rootOptions = Options;
         var currentArgPos = 0;
@@ -92,18 +93,16 @@ public static class Program
         if (args.Length == 0)
             return;
 
+        var commandReader = new CommandReader(Options, args);
+
         try
         {
-            var action = ReadNaturalLanguageCommand(args);
+            var command = commandReader.Read();
 
-            if (action is null)
-            {
-                string readableCommand = string.Join(' ', args);
+            if (command is null)
+                throw new Exception(@$"command ""{commandReader}"" does not exists");
 
-                throw new Exception(@$"command ""{readableCommand}"" does not exists");
-            }
-
-            ActionRunner.Run(action);
+            ActionRunner.Run(command);
         }
         catch (InvalidOptionException)
         {
