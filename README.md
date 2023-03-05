@@ -53,3 +53,27 @@ settings.json
 in any of this scripts if you want to run specific class tests.
 
 just add the class test name after the script name
+
+## Available CLI commands
+
+read the tree as a joined string like:
+
+> tree:
+>
+> - test
+>   - my
+>     - account
+>
+> result:
+>
+> "test my account"
+
+- account
+  - create `create new account`
+  - login `make login`
+- task
+  - create `create a new task`
+  - complete `complete a task`
+  - uncomplete `uncomplete a task`
+  - list `list all tasks`
+  - delete `delete a task`
