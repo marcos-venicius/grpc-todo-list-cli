@@ -1,6 +1,18 @@
+using System.Reflection;
+using FluentMigrator.Runner;
+using GrpcTodo.Server.Infra;
+using GrpcTodo.Server.IoC;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddLogging(c => c.AddFluentMigratorConsole())
+        .AddFluentMigratorCore()
+        .ConfigureRunner(c => c.AddPostgres()
+            .WithGlobalConnectionString(builder.Configuration.GetConnectionString("postgresql"))
+            .ScanIn(Assembly.GetExecutingAssembly()).For.Migrations());
+
+builder.Services.AddIoC();
 
 // builder.Services.AddControllers();
 
@@ -29,5 +41,7 @@ app.UseHttpsRedirection();
 // app.UseAuthorization();
 
 // app.MapControllers();
+
+app.RunMigrations(app.Environment);
 
 app.Run();
