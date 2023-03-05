@@ -44,3 +44,12 @@ settings.json
   }
 }
 ```
+
+## How to server tests?
+
+- run script [test-server.win.ps1](./test-server.win.ps1) for windows **(tested)**
+- run script [test-server.unix](./test-server.unix) for unix **(not tested)**
+
+in any of this scripts if you want to run specific class tests.
+
+just add the class test name after the script name

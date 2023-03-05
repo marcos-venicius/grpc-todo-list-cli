@@ -1,0 +1,1 @@
+global using GrpcTodo.SharedKernel.Exceptions;

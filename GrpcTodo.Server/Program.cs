@@ -1,5 +1,6 @@
 using System.Reflection;
 using FluentMigrator.Runner;
+using GrpcTodo.Server.GrpcServices;
 using GrpcTodo.Server.Infra;
 using GrpcTodo.Server.IoC;
 using Serilog;
@@ -29,6 +30,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddGrpc();
 
 var app = builder.Build();
+
+app.MapGrpcService<UserGrpcService>();
 
 if (app.Environment.IsDevelopment())
 {
