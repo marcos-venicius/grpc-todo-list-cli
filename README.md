@@ -32,3 +32,15 @@ cd GrpcTodo.Server
 ```bash
 dotnet run -lp https
 ```
+
+## Proto VSCode Extension help
+
+settings.json
+
+```json
+{
+  "protoc": {
+    "options": ["--proto_path=GrpcTodo.SharedKernel/Protos"]
+  }
+}
+```
