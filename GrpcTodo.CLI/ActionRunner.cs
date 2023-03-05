@@ -2,18 +2,15 @@ using GrpcTodo.CLI.Enums;
 
 internal static class ActionRunner
 {
-    public static void Run(ActionType action)
+    public static void Run(ActionType? action)
     {
         switch (action)
         {
-            case ActionType.None:
+            case null:
                 return;
-            case ActionType.ListTodo:
+            case ActionType.CreateAccount:
+                Console.WriteLine("create user account");
                 break;
-            case ActionType.CreateTodo:
-                break;
-            case ActionType.Exit:
-                throw new ExitApplicationException();
         }
     }
 }

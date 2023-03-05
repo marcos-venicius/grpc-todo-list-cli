@@ -4,109 +4,81 @@ using GrpcTodo.CLI.Utils;
 
 public static class Program
 {
-    private static Dictionary<ushort, Option> Options = new()
+    private static List<Option> Options = new()
     {
-        { 1, new () { Action = ActionType.CreateTodo, Name = "create todo" } },
-        { 2, new () { Action = ActionType.ListTodo, Name = "list todo" } },
-        { 3, new () { Action = ActionType.Exit, Name = "exit" } }
-    };
-
-    private static Dictionary<string, ushort> Aliases = new()
-    {
-        { "ct", 1 },
-        { "lt", 2 }
-    };
-
-    private static void ShowOptions()
-    {
-        Console.WriteLine("=== MENU");
-        Console.WriteLine();
-
-        foreach (var option in Options)
-        {
-            Console.WriteLine($"[{option.Key}] {option.Value.Name}");
+        new Option{
+            Path = "create",
+            Children = new List<Option> {
+                new Option {
+                    Name = "create account",
+                    Path = "account",
+                    Action = ActionType.CreateAccount,
+                    Children = new List<Option>()
+                }
+            }
         }
-    }
+    };
 
-    private static ActionType ReadOption()
+    private static ActionType? IndentifyCommand(string[] args)
     {
-        Console.Write("> ");
+        var rootOptions = Options;
+        var currentArgPos = 0;
+        var currentOptionPos = 0;
 
-        var readed = Console.ReadLine();
+        while (currentOptionPos < rootOptions.Count)
+        {
+            var option = rootOptions[currentOptionPos]; // account
 
-        if (!ushort.TryParse(readed, out var key))
-            throw new InvalidOptionException();
+            if (option.Path == args[currentArgPos])
+            {
+                if (currentArgPos == args.Length - 1)
+                {
+                    var ac = option.Action;
 
-        if (!Options.ContainsKey(key))
-            throw new InvalidOptionException();
+                    return ac;
+                }
 
-        return Options[key].Action;
-    }
+                rootOptions = option.Children;
+                currentOptionPos = 0;
+                currentArgPos++;
+            }
+            else
+            {
+                currentOptionPos++;
+            }
+        }
 
-    private static ActionType IndentifyAlias(string alias)
-    {
-        if (Aliases.ContainsKey(alias))
-            return Options[Aliases[alias]].Action;
-
-        return ActionType.None;
+        return null;
     }
 
     public static void Main(string[] args)
     {
-        while (true)
+        string readableCommand = string.Join(' ', args);
+
+        try
         {
-            Console.Clear();
+            var action = IndentifyCommand(args);
 
-            try
-            {
-                if (args.Length >= 1)
-                {
-                    var alias = args[0];
+            if (action is null)
+                throw new Exception(@$"command ""{readableCommand}"" does not exists");
 
-                    var action = IndentifyAlias(alias);
-
-                    if (action is not ActionType.None)
-                    {
-                        ActionRunner.Run(action);
-                        break;
-                    }
-                }
-
-                // --
-
-                ShowOptions();
-                var option = ReadOption();
-
-                ActionRunner.Run(option);
-            }
-            catch (InvalidOptionException)
-            {
-                ConsoleWritter.WriteLine("[!!] invalid option", true);
-
-                Console.ReadKey();
-
-                continue;
-            }
-            catch (ShowErrorMessageException e)
-            {
-                ConsoleWritter.WriteLine(e.Message, true);
-
-                Console.ReadKey();
-            }
-            catch (ExitApplicationException)
-            {
-                ConsoleWritter.WriteLine("good bye!", true);
-
-                break;
-            }
-            catch (Exception e)
-            {
-                ConsoleWritter.WriteLine($"[!] {e.Message}", true);
-
-                Console.ReadKey();
-
-                continue;
-            }
+            ActionRunner.Run(action);
+        }
+        catch (InvalidOptionException)
+        {
+            ConsoleWritter.WriteLine("[!!] invalid option", true);
+        }
+        catch (ShowErrorMessageException e)
+        {
+            ConsoleWritter.WriteLine(e.Message, true);
+        }
+        catch (ExitApplicationException)
+        {
+            ConsoleWritter.WriteLine("good bye!", true);
+        }
+        catch (Exception e)
+        {
+            ConsoleWritter.WriteLine($"[!] {e.Message}", true);
         }
     }
 }
