@@ -100,25 +100,29 @@ public static class Program
             var command = commandReader.Read();
 
             if (command is null)
-                throw new Exception(@$"command ""{commandReader}"" does not exists");
+                throw new InvalidCommandException(@$"command ""{commandReader}"" does not exists");
 
             ActionRunner.Run(command);
         }
-        catch (InvalidOptionException)
-        {
-            ConsoleWritter.WriteLine("[!!] invalid option");
-        }
         catch (ShowErrorMessageException e)
         {
-            ConsoleWritter.WriteLine(e.Message);
+            ConsoleWritter.WriteError(e.Message);
         }
         catch (ExitApplicationException)
         {
-            ConsoleWritter.WriteLine("good bye!");
+            ConsoleWritter.WriteSuccess("good bye!");
+        }
+        catch (InvalidCommandException e)
+        {
+            ConsoleWritter.WriteError(e.Message);
+
+            commandReader.ShowAvailableCommands();
+
+            commandReader.GetNearestCommand(commandReader.ToString());
         }
         catch (Exception e)
         {
-            ConsoleWritter.WriteLine($"[!] {e.Message}");
+            ConsoleWritter.WriteError(e.Message);
         }
     }
 }

@@ -2,11 +2,32 @@ namespace GrpcTodo.CLI.Utils;
 
 public static class ConsoleWritter
 {
-    public static void WriteLine(string line, bool? clear = false)
+    private static void Write(ConsoleColor color, string message)
     {
-        if (clear == true)
-            Console.Clear();
+        Console.ForegroundColor = color;
 
-        Console.WriteLine($"\n{line}\n");
+        Console.WriteLine(message);
+
+        Console.ResetColor();
+    }
+
+    public static void WriteError(string line)
+    {
+        Write(ConsoleColor.Red, $"\n[!] {line}\n");
+    }
+
+    public static void WriteSuccess(string line, string label = "+")
+    {
+        Write(ConsoleColor.Green, $"[{label}] {line}");
+    }
+
+    public static void WriteInfo(string line)
+    {
+        Write(ConsoleColor.Blue, line);
+    }
+
+    public static void Write(string line)
+    {
+        Write(ConsoleColor.White, line);
     }
 }
