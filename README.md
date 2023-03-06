@@ -79,3 +79,15 @@ read the tree as a joined string like:
   - uncomplete `uncomplete a task`
   - list `list all tasks`
   - delete `delete a task`
+
+for example:
+
+```bash
+gl account create
+```
+
+or
+
+```bash
+gl task create
+```
