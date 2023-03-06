@@ -6,17 +6,17 @@ namespace GrpcTodo.CLI;
 public sealed class CLI
 {
     private readonly string[] _args;
-    private readonly Menu _menu;
+    public readonly Menu Menu;
 
     public CLI(string[] args)
     {
         _args = args;
-        _menu = new Menu();
+        Menu = new Menu();
     }
 
     public void Run()
     {
-        var commandReader = new CommandReader(_menu, _args);
+        var commandReader = new CommandReader(Menu, _args);
 
         try
         {
@@ -39,7 +39,7 @@ public sealed class CLI
         {
             ConsoleWritter.WriteError(e.Message);
 
-            _menu.ShowAvailableOptions();
+            Menu.ShowAvailableOptions();
 
             commandReader.GetNearestCommand(commandReader.ToString());
         }

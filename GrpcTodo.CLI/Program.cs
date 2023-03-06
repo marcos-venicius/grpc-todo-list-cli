@@ -1,6 +1,5 @@
 ﻿using GrpcTodo.CLI;
 
-
 public static class Program
 {
     public static void Main(string[] args)
@@ -8,7 +7,11 @@ public static class Program
         var cli = new CLI(args);
 
         if (args.Length == 0)
+        {
+            cli.Menu.ShowAvailableOptions();
+
             return;
+        }
 
         cli.Run();
     }
