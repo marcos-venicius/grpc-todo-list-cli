@@ -5,6 +5,8 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <TargetName>gl</TargetName>
+    <AssemblyName>gl</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
