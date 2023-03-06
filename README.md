@@ -4,7 +4,9 @@
   <img src="./docs/images/structure.png">
 </div>
 
-A simple grpc todo list on live. your todo list as CLI
+A simple grpc todo list on live. your todo list as CLI.
+
+create, list, complete, uncomplete, your tasks in your terminal and more...
 
 ## How to run on your machine?
 
