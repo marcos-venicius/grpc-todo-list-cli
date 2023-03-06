@@ -1,18 +1,17 @@
 using GrpcTodo.CLI.Enums;
-using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
 
 namespace GrpcTodo.CLI.Services;
 
 public sealed class CommandReader
 {
+    private readonly Menu _menu;
     private readonly string[] _args;
-    private readonly List<Option> _options;
 
-    public CommandReader(List<Option> options, string[] args)
+    public CommandReader(Menu menu, string[] args)
     {
-        _options = options;
         _args = args;
+        _menu = menu;
     }
 
     private static int ComputeLevenshteinDistance(string source, string target)
@@ -48,88 +47,30 @@ public sealed class CommandReader
         return distance[sourceWordCount, targetWordCount];
     }
 
-    private static List<string> GetPaths(Option option)
+    public void GetNearestCommand(string wrongCommand)
     {
-        List<string> paths = new();
+        var commandsPath = _menu.GetMenuCommands();
 
-        void T(List<Option> options, string path = "")
+        int currentLevenshteinDistance = ComputeLevenshteinDistance(wrongCommand, commandsPath[0]);
+        var currentCommand = commandsPath[0];
+
+        for (var i = 1; i < commandsPath.Count; i++)
         {
-            if (option.Path != path)
-                paths.Add(path);
-
-            foreach (var option in options)
-            {
-                var _path = $"{path} {option.Path}";
-
-                T(option.Children, _path);
-            }
-        }
-
-        T(option.Children, option.Path);
-
-        return paths;
-    }
-
-    public void GetNearestCommand(string command)
-    {
-        List<string> paths = new();
-
-        foreach (var option in _options)
-        {
-            var optionPaths = GetPaths(option);
-
-            paths.AddRange(optionPaths);
-        }
-
-        int currentLevenshteinDistance = ComputeLevenshteinDistance(command, paths[0]);
-        string currentPath = paths[0];
-
-        for (int i = 1; i < paths.Count; i++)
-        {
-            var levenshteinDistance = ComputeLevenshteinDistance(command, paths[i]);
+            var levenshteinDistance = ComputeLevenshteinDistance(wrongCommand, commandsPath[i]);
 
             if (levenshteinDistance < currentLevenshteinDistance)
             {
                 currentLevenshteinDistance = levenshteinDistance;
-                currentPath = paths[i];
+                currentCommand = commandsPath[i];
             }
         }
 
-        ConsoleWritter.WriteSuccess($@"did you mean ""{currentPath}""?", "tip");
-    }
-
-    private static void ShowOnDisplayRecursively(List<Option> options, int tabs)
-    {
-        foreach (var option in options)
-        {
-            string tab = new string(' ', tabs);
-
-            string message = $"{tab}- {option.Path}";
-
-            if (tabs == 0)
-            {
-                Console.WriteLine();
-            }
-
-            ConsoleWritter.WriteInfo(message);
-
-            if (option.Children.Any())
-                ShowOnDisplayRecursively(option.Children, tabs + 4);
-        }
-    }
-
-    public void ShowAvailableCommands()
-    {
-        ConsoleWritter.Write("AVAILABLE COMMANDS:");
-
-        ShowOnDisplayRecursively(_options, 0);
-
-        Console.WriteLine();
+        ConsoleWritter.WriteSuccess($@"did you mean ""{currentCommand}""", "tip");
     }
 
     public Command? Read()
     {
-        var rootOptions = _options;
+        var rootOptions = _menu.Options;
         var currentArgPos = 0;
         var currentOptionPos = 0;
 
@@ -140,7 +81,7 @@ public sealed class CommandReader
             if (option.Path == _args[currentArgPos])
             {
                 if (currentArgPos == _args.Length - 1)
-                    return option.Action;
+                    return option.Command;
 
                 rootOptions = option.Children;
                 currentOptionPos = 0;

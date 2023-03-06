@@ -2,11 +2,14 @@ namespace GrpcTodo.CLI.Utils;
 
 public static class ConsoleWritter
 {
-    private static void Write(ConsoleColor color, string message)
+    private static void Write(ConsoleColor color, string message, bool breakLine = true)
     {
         Console.ForegroundColor = color;
 
-        Console.WriteLine(message);
+        if (breakLine)
+            Console.WriteLine(message);
+        else
+            Console.Write(message);
 
         Console.ResetColor();
     }
@@ -21,13 +24,13 @@ public static class ConsoleWritter
         Write(ConsoleColor.Green, $"[{label}] {line}");
     }
 
-    public static void WriteInfo(string line)
+    public static void WriteInfo(string line, bool notBreakLine = false)
     {
-        Write(ConsoleColor.Blue, line);
+        Write(ConsoleColor.Blue, line, notBreakLine);
     }
 
-    public static void Write(string line)
+    public static void Write(string line, bool notBreakLine = false)
     {
-        Write(ConsoleColor.White, line);
+        Write(ConsoleColor.White, line, notBreakLine);
     }
 }
