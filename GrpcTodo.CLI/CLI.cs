@@ -20,12 +20,14 @@ public sealed class CLI
 
         try
         {
+            var actionRunner = new ActionRunner();
+
             var command = commandReader.Read();
 
             if (command is null)
                 throw new InvalidCommandException(@$"command ""{commandReader}"" does not exists");
 
-            await ActionRunner.Run(command);
+            await actionRunner.Run(command);
         }
         catch (ShowErrorMessageException e)
         {

@@ -1,15 +1,23 @@
 using GrpcTodo.CLI.Enums;
+using GrpcTodo.CLI.UseCases;
 
-internal static class ActionRunner
+internal class ActionRunner
 {
-    public static Task Run(Command? action)
+    private readonly CreateAccountUseCase _createAccountUseCase;
+
+    public ActionRunner()
+    {
+        _createAccountUseCase = new CreateAccountUseCase();
+    }
+
+    public async Task Run(Command? action)
     {
         switch (action)
         {
             case null:
                 break;
             case Command.CreateAccount:
-                Console.WriteLine("create user account");
+                await _createAccountUseCase.ExecuteAsync();
                 break;
             case Command.Login:
                 Console.WriteLine("make user login");
@@ -30,7 +38,5 @@ internal static class ActionRunner
                 Console.WriteLine("delete task");
                 break;
         }
-
-        return Task.CompletedTask;
     }
 }
