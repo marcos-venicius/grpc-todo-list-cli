@@ -6,7 +6,7 @@
 
 ## Demo
 
-[![view demo](./docs/images/video-placeholder.PNG)](./docs/videos/demo.mp4)
+[![view demo](./docs/images/video-placeholder.PNG)](https://www.youtube.com/watch?v=fMegmXOOVV0)
 
 A simple grpc todo list on live. your todo list as CLI.
 
