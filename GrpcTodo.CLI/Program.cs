@@ -2,7 +2,7 @@
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var cli = new CLI(args);
 
@@ -13,6 +13,6 @@ public static class Program
             return;
         }
 
-        cli.Run();
+        await cli.Run();
     }
 }

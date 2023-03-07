@@ -2,12 +2,12 @@ using GrpcTodo.CLI.Enums;
 
 internal static class ActionRunner
 {
-    public static void Run(Command? action)
+    public static Task Run(Command? action)
     {
         switch (action)
         {
             case null:
-                return;
+                break;
             case Command.CreateAccount:
                 Console.WriteLine("create user account");
                 break;
@@ -30,5 +30,7 @@ internal static class ActionRunner
                 Console.WriteLine("delete task");
                 break;
         }
+
+        return Task.CompletedTask;
     }
 }

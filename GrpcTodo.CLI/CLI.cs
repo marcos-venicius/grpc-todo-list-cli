@@ -14,7 +14,7 @@ public sealed class CLI
         Menu = new Menu();
     }
 
-    public void Run()
+    public async Task Run()
     {
         var commandReader = new CommandReader(Menu, _args);
 
@@ -25,7 +25,7 @@ public sealed class CLI
             if (command is null)
                 throw new InvalidCommandException(@$"command ""{commandReader}"" does not exists");
 
-            ActionRunner.Run(command);
+            await ActionRunner.Run(command);
         }
         catch (ShowErrorMessageException e)
         {
