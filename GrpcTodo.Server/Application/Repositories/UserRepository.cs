@@ -19,13 +19,11 @@ public sealed class UserRepository : IUserRepository
     {
         using var connection = _context.CreateConnection();
 
-        await connection.ExecuteAsync(UserQueries.Create, new
+        return await connection.ExecuteScalarAsync<Guid>(UserQueries.Create, new
         {
             username,
             password
         });
-
-        return await connection.QuerySingleAsync<Guid>(UserQueries.GetCurrSequenceValue);
     }
 
     public async Task<User?> FindByNameAsync(string username)

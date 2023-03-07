@@ -1,6 +1,6 @@
 using System.Data;
-using System.Data.SqlClient;
 using GrpcTodo.Server.Infra.Interfaces;
+using Npgsql;
 
 namespace GrpcTodo.Server.Infra.Context;
 
@@ -13,5 +13,5 @@ public sealed class DapperContext : IContext
         _configuration = configuration;
     }
 
-    public IDbConnection CreateConnection() => new SqlConnection(_configuration.GetConnectionString("postgresql"));
+    public IDbConnection CreateConnection() => new NpgsqlConnection(_configuration.GetConnectionString("postgresql"));
 }
