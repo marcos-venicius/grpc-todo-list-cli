@@ -58,17 +58,7 @@ just add the class test name after the script name
 
 ## Available CLI commands
 
-read the tree as a joined string like:
-
-> tree:
->
-> - test
->   - my
->     - account
->
-> result:
->
-> "test my account"
+![Available commands](./docs/images/available-commands.PNG "Available commands")
 
 - account
   - create `create new account`
@@ -80,14 +70,14 @@ read the tree as a joined string like:
   - list `list all tasks`
   - delete `delete a task`
 
-for example:
+**if a command is green, this are implemented. if is red, are not**
+
+## How to use the CLI in DEV
 
 ```bash
-gl account create
+cd ./GrpcTodo.CLI
 ```
 
-or
-
 ```bash
-gl task create
+dotnet run <command>
 ```
