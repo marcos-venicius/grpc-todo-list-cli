@@ -6,36 +6,36 @@ namespace GrpcTodo.CLI;
 
 public sealed class Menu
 {
-    public List<Option> Options = new()
+    public List<MenuOption> Options = new()
     {
-        new Option {
+        new MenuOption {
             Path = "task",
             Children = new () {
-                new Option {
+                new MenuOption {
                     Path = "create",
                     Command = Command.CreateTask,
                     Description = "create a new task",
                     Children = new()
                 },
-                new Option {
+                new MenuOption {
                     Path = "complete",
                     Command = Command.CompleteTask,
                     Description = "complete a task",
                     Children = new()
                 },
-                new Option {
+                new MenuOption {
                     Path = "uncomplete",
                     Command = Command.UncompleteTask,
                     Description = "uncomplete a task",
                     Children = new()
                 },
-                new Option {
+                new MenuOption {
                     Path = "list",
                     Command = Command.ListAllTasks,
                     Description = "list all tasks",
                     Children = new()
                 },
-                new Option {
+                new MenuOption {
                     Path = "delete",
                     Command = Command.DeleteTask,
                     Description = "delete a task",
@@ -43,16 +43,19 @@ public sealed class Menu
                 },
             }
         },
-        new Option {
+        new MenuOption {
             Path = "account",
+            IsImplemented = true,
+
             Children = new () {
-                new Option {
+                new MenuOption {
                     Description = "create new account",
                     Path = "create",
                     Command = Command.CreateAccount,
-                    Children = new ()
+                    Children = new (),
+                    IsImplemented = true
                 },
-                new Option {
+                new MenuOption {
                     Path = "login",
                     Command = Command.Login,
                     Description = "make login",
@@ -62,20 +65,23 @@ public sealed class Menu
         },
     };
 
-    private static void ShowAvailableOptionsRecursively(List<Option> options, int tabs = 0)
+    private static void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0)
     {
         foreach (var option in options)
         {
             string tab = new string(' ', tabs);
 
-            string message = $"{tab} {option.Path}";
+            string path = $"{tab} {option.Path}";
 
             if (tabs == 0)
             {
                 Console.WriteLine();
             }
 
-            ConsoleWritter.WriteInfo(message, option.Description is null);
+            if (option.IsImplemented)
+                ConsoleWritter.WriteWithColor(path, ConsoleColor.Green, option.Description is null);
+            else
+                ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is null);
 
             if (option.Description is not null)
                 ConsoleWritter.Write($@"{new string(' ', tabs)}{option.Description}", true);
@@ -94,11 +100,11 @@ public sealed class Menu
         Console.WriteLine();
     }
 
-    private static List<string> GetMenuOptionsPaths(Option option)
+    private static List<string> GetMenuOptionsPaths(MenuOption option)
     {
         List<string> paths = new();
 
-        void ExtractPath(List<Option> options, string path = "")
+        void ExtractPath(List<MenuOption> options, string path = "")
         {
             if (option.Path != path)
                 paths.Add(path);

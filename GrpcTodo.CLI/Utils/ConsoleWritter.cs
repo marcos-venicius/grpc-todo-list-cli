@@ -14,6 +14,11 @@ public static class ConsoleWritter
         Console.ResetColor();
     }
 
+    public static void WriteWithColor(string line, ConsoleColor color, bool notBreakLine = false)
+    {
+        Write(color, line, notBreakLine);
+    }
+
     public static void WriteError(string line)
     {
         Write(ConsoleColor.Red, $"\n[!] {line}\n");

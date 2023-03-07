@@ -2,12 +2,14 @@ using GrpcTodo.CLI.Enums;
 
 namespace GrpcTodo.CLI.Models;
 
-public sealed class Option
+public sealed class MenuOption
 {
     public string? Description { get; set; }
-    public required string Path { get; set; }
     public Command? Command { get; set; }
-    public required List<Option> Children { get; set; }
+
+    public required string Path { get; set; }
+    public required List<MenuOption> Children { get; set; }
+    public bool IsImplemented { get; set; }
 
     public override string ToString()
     {
