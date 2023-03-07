@@ -4,6 +4,10 @@
   <img src="./docs/images/structure.png">
 </div>
 
+## Demo
+
+[![view demo](./docs/images/video-placeholder.PNG)](./docs/videos/demo.mp4)
+
 A simple grpc todo list on live. your todo list as CLI.
 
 create, list, complete, uncomplete, your tasks in your terminal and more...
