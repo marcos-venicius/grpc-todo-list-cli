@@ -6,8 +6,31 @@ namespace GrpcTodo.CLI;
 
 public sealed class Menu
 {
+    private readonly Dictionary<string, object> _args = new();
+
     public List<MenuOption> Options = new()
     {
+        new MenuOption {
+            Path = "account",
+            IsImplemented = true,
+
+            Children = new () {
+                new MenuOption {
+                    Description = "create new account",
+                    Path = "create",
+                    Command = Command.CreateAccount,
+                    Children = new (),
+                    IsImplemented = true
+                },
+                new MenuOption {
+                    Path = "login",
+                    Command = Command.Login,
+                    Description = "make login",
+                    Children = new()
+                }
+            }
+        },
+
         new MenuOption {
             Path = "task",
             Children = new () {
@@ -42,31 +65,56 @@ public sealed class Menu
                     Children = new()
                 },
             }
-        },
-        new MenuOption {
-            Path = "account",
-            IsImplemented = true,
-
-            Children = new () {
-                new MenuOption {
-                    Description = "create new account",
-                    Path = "create",
-                    Command = Command.CreateAccount,
-                    Children = new (),
-                    IsImplemented = true
-                },
-                new MenuOption {
-                    Path = "login",
-                    Command = Command.Login,
-                    Description = "make login",
-                    Children = new()
-                }
-            }
-        },
+        }
     };
 
-    private static void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0)
+    public void SetArg(string arg, object value)
     {
+        _args.Add(arg, value);
+    }
+
+    public object? GetArg(string arg)
+    {
+        _args.TryGetValue(arg, out var data);
+
+        return data;
+    }
+
+    public string GetCommandHelp(Command command)
+    {
+        MenuOption? Find(List<MenuOption> options)
+        {
+            foreach (var option in options)
+            {
+                if (option.Command == command)
+                    return option;
+
+                if (option.Children.Any())
+                {
+                    var result = Find(option.Children);
+
+                    if (result is not null)
+                        return result;
+                }
+            }
+
+            return default!;
+        }
+
+        var menuOption = Find(Options);
+
+        if (menuOption is null)
+            return "COMMAND HELP NOT FOUND";
+
+        return @$"
+description: {menuOption.Description}
+";
+    }
+
+    private void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0)
+    {
+        var help = _args.ContainsKey("--help");
+
         foreach (var option in options)
         {
             string tab = new string(' ', tabs);
@@ -83,8 +131,10 @@ public sealed class Menu
             else
                 ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is null);
 
-            if (option.Description is not null)
+            if (help && option.Description is not null)
                 ConsoleWritter.Write($@"{new string(' ', tabs)}{option.Description}", true);
+            else if (!help && option.Description is not null)
+                Console.WriteLine();
 
             if (option.Children.Any())
                 ShowAvailableOptionsRecursively(option.Children, tabs + 2);
@@ -93,7 +143,7 @@ public sealed class Menu
 
     public void ShowAvailableOptions()
     {
-        ConsoleWritter.Write("AVAILABLE COMMANDS:");
+        ConsoleWritter.WriteWithColor("\nAVAILABLE COMMANDS:\n", ConsoleColor.DarkCyan);
 
         ShowAvailableOptionsRecursively(Options);
 

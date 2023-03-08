@@ -6,7 +6,9 @@ public static class Program
     {
         var cli = new CLI(args);
 
-        if (args.Length == 0)
+        cli.ReadArgs();
+
+        if (!cli.HasPossibleCommands())
         {
             cli.Menu.ShowAvailableOptions();
 

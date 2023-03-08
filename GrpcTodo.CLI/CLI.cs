@@ -1,3 +1,4 @@
+using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Services;
 using GrpcTodo.CLI.Utils;
 
@@ -14,6 +15,31 @@ public sealed class CLI
         Menu = new Menu();
     }
 
+    public bool HasPossibleCommands()
+    {
+        return _args.Count() > 0 && _args.Any(x => !x.StartsWith("--"));
+    }
+
+    public void ReadArgs()
+    {
+        foreach (var arg in _args)
+        {
+            if (arg == "--help")
+                Menu.SetArg(arg, true);
+        }
+    }
+
+    public int GetArgPos(string arg)
+    {
+        for (int i = 0; i < _args.Count(); i++)
+        {
+            if (_args[i] == arg)
+                return i;
+        }
+
+        return -1;
+    }
+
     public async Task Run()
     {
         var commandReader = new CommandReader(Menu, _args);
@@ -22,12 +48,19 @@ public sealed class CLI
         {
             var actionRunner = new ActionRunner();
 
-            var command = commandReader.Read();
+            var menuOption = commandReader.Read();
 
-            if (command is null)
+
+            if (menuOption is null)
                 throw new InvalidCommandException(@$"command ""{commandReader}"" does not exists");
 
-            await actionRunner.Run(command);
+            if (menuOption.Command is not null && GetArgPos(menuOption.Path) == GetArgPos("--help") - 1)
+            {
+                ConsoleWritter.WriteInfo(Menu.GetCommandHelp(menuOption.Command ?? 0));
+                return;
+            }
+
+            await actionRunner.Run(menuOption.Command);
         }
         catch (ShowErrorMessageException e)
         {

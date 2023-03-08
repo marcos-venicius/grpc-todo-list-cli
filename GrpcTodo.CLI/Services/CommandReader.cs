@@ -1,4 +1,5 @@
 using GrpcTodo.CLI.Enums;
+using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
 
 namespace GrpcTodo.CLI.Services;
@@ -10,7 +11,7 @@ public sealed class CommandReader
 
     public CommandReader(Menu menu, string[] args)
     {
-        _args = args;
+        _args = args.Where(arg => !arg.StartsWith("--")).ToArray();
         _menu = menu;
     }
 
@@ -68,7 +69,7 @@ public sealed class CommandReader
         ConsoleWritter.WriteSuccess($@"did you mean ""{currentCommand}""", "tip");
     }
 
-    public Command? Read()
+    public MenuOption? Read()
     {
         var rootOptions = _menu.Options;
         var currentArgPos = 0;
@@ -81,7 +82,10 @@ public sealed class CommandReader
             if (option.Path == _args[currentArgPos])
             {
                 if (currentArgPos == _args.Length - 1)
-                    return option.Command;
+                    if (option.Command is not null)
+                        return option;
+                    else
+                        return null;
 
                 rootOptions = option.Children;
                 currentOptionPos = 0;
