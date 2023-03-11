@@ -93,11 +93,15 @@ public sealed class ConfigsManager
 
     public string? Get(string key)
     {
+        CreateConfigFilesIfNotExists();
+
         return GetDetailed(key)?.Value;
     }
 
     public void Remove(string key)
     {
+        CreateConfigFilesIfNotExists();
+
         var keyOnFile = GetDetailed(key);
 
         if (keyOnFile is null)
@@ -126,6 +130,8 @@ public sealed class ConfigsManager
 
     public void Set(string key, string value)
     {
+        CreateConfigFilesIfNotExists();
+
         var keyOnFile = GetDetailed(key);
 
         StringBuilder newFileContent = new();
