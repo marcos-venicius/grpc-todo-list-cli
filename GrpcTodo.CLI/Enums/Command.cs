@@ -4,6 +4,7 @@ public enum Command
 {
     CreateAccount,
     Login,
+    Logout,
     ListAllTasks,
     CreateTask,
     CompleteTask,

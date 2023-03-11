@@ -27,6 +27,13 @@ public sealed class Menu
                     Command = Command.Login,
                     Description = "make login",
                     Children = new()
+                },
+                new MenuOption {
+                    Path = "logout",
+                    IsImplemented = true,
+                    Command = Command.Logout,
+                    Description = "make logout. signout from your account",
+                    Children = new ()
                 }
             }
         },
