@@ -1,4 +1,5 @@
-using GrpcTodo.CLI.Enums;
+using GrpcTodo.CLI.Lib;
+using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Services;
 using GrpcTodo.CLI.Utils;
 
@@ -7,60 +8,41 @@ namespace GrpcTodo.CLI;
 public sealed class CLI
 {
     private readonly string[] _args;
+    private readonly ArgsParams _argsParams;
     public readonly Menu Menu;
 
     public CLI(string[] args)
     {
         _args = args;
+        _argsParams = new ArgsParams(args);
         Menu = new Menu();
-    }
 
-    public bool HasPossibleCommands()
-    {
-        return _args.Count() > 0 && _args.Any(x => !x.StartsWith("--"));
-    }
-
-    public void ReadArgs()
-    {
-        foreach (var arg in _args)
-        {
-            if (arg == "--help")
-                Menu.SetArg(arg, true);
-        }
-    }
-
-    public int GetArgPos(string arg)
-    {
-        for (int i = 0; i < _args.Count(); i++)
-        {
-            if (_args[i] == arg)
-                return i;
-        }
-
-        return -1;
+        _argsParams.Set(
+            "--help",
+            new ParamDetail("Help", "Get command help")
+        );
     }
 
     public async Task Run()
     {
+        var parameters = _argsParams.Read();
+
         var commandReader = new CommandReader(Menu, _args);
 
         try
         {
             var actionRunner = new ActionRunner();
 
-            var menuOption = commandReader.Read();
-
-
-            if (menuOption is null)
-                throw new InvalidCommandException(@$"command ""{commandReader}"" does not exists");
-
-            if (menuOption.Command is not null && GetArgPos(menuOption.Path) == GetArgPos("--help") - 1)
+            if (commandReader.HasPossibleOptions())
             {
-                ConsoleWritter.WriteInfo(Menu.GetCommandHelp(menuOption.Command ?? 0));
-                return;
-            }
+                var menuOption = commandReader.Read();
 
-            await actionRunner.Run(menuOption.Command);
+                await actionRunner.Run(menuOption?.Command, commandReader.ToString(), parameters);
+            }
+            else
+            {
+                Menu.ShowAvailableOptions(parameters);
+            }
         }
         catch (ShowErrorMessageException e)
         {
@@ -74,7 +56,7 @@ public sealed class CLI
         {
             ConsoleWritter.WriteError(e.Message);
 
-            Menu.ShowAvailableOptions();
+            Menu.ShowAvailableOptions(parameters);
 
             commandReader.GetNearestCommand(commandReader.ToString());
         }

@@ -1,4 +1,5 @@
 using GrpcTodo.CLI.Enums;
+using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
 
@@ -6,9 +7,7 @@ namespace GrpcTodo.CLI;
 
 public sealed class Menu
 {
-    private readonly Dictionary<string, object> _args = new();
-
-    public List<MenuOption> Options = new()
+    public static List<MenuOption> Options = new()
     {
         new MenuOption {
             Path = "account",
@@ -68,19 +67,7 @@ public sealed class Menu
         }
     };
 
-    public void SetArg(string arg, object value)
-    {
-        _args.Add(arg, value);
-    }
-
-    public object? GetArg(string arg)
-    {
-        _args.TryGetValue(arg, out var data);
-
-        return data;
-    }
-
-    public string GetCommandHelp(Command command)
+    public static string GetCommandHelp(Command command)
     {
         MenuOption? Find(List<MenuOption> options)
         {
@@ -111,10 +98,8 @@ description: {menuOption.Description}
 ";
     }
 
-    private void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0)
+    private void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0, bool help = false)
     {
-        var help = _args.ContainsKey("--help");
-
         foreach (var option in options)
         {
             string tab = new string(' ', tabs);
@@ -137,15 +122,15 @@ description: {menuOption.Description}
                 Console.WriteLine();
 
             if (option.Children.Any())
-                ShowAvailableOptionsRecursively(option.Children, tabs + 2);
+                ShowAvailableOptionsRecursively(option.Children, tabs + 2, help);
         }
     }
 
-    public void ShowAvailableOptions()
+    public void ShowAvailableOptions(Parameters parameters)
     {
         ConsoleWritter.WriteWithColor("\nAVAILABLE COMMANDS:\n", ConsoleColor.DarkCyan);
 
-        ShowAvailableOptionsRecursively(Options);
+        ShowAvailableOptionsRecursively(Options, 0, parameters.Has("--help"));
 
         Console.WriteLine();
     }

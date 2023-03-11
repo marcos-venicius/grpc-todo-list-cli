@@ -1,4 +1,5 @@
 using GrpcTodo.CLI.Enums;
+using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases;
 
 internal class ActionRunner
@@ -10,14 +11,14 @@ internal class ActionRunner
         _createAccountUseCase = new CreateAccountUseCase();
     }
 
-    public async Task Run(Command? action)
+    public async Task Run(Command? action, string command, Parameters parameters)
     {
         switch (action)
         {
             case null:
-                break;
+                throw new InvalidCommandException(@$"command ""{command}"" does not exists");
             case Command.CreateAccount:
-                await _createAccountUseCase.ExecuteAsync();
+                await _createAccountUseCase.ExecuteAsync(parameters);
                 break;
             case Command.Login:
                 Console.WriteLine("make user login");

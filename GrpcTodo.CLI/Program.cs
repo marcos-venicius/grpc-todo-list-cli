@@ -6,15 +6,6 @@ public static class Program
     {
         var cli = new CLI(args);
 
-        cli.ReadArgs();
-
-        if (!cli.HasPossibleCommands())
-        {
-            cli.Menu.ShowAvailableOptions();
-
-            return;
-        }
-
         await cli.Run();
     }
 }

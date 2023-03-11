@@ -3,13 +3,24 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcTodo.SharedKernel.Protos.User;
 using GrpcTodo.SharedKernel.Protos.User.Requests;
+using GrpcTodo.CLI.Enums;
+using GrpcTodo.CLI.Lib;
 
 namespace GrpcTodo.CLI.UseCases;
 
 public sealed class CreateAccountUseCase
 {
-    public async Task ExecuteAsync()
+    public async Task ExecuteAsync(Parameters parameters)
     {
+        if (parameters.Has("--help"))
+        {
+            var help = Menu.GetCommandHelp(Command.CreateAccount);
+
+            ConsoleWritter.Write(help);
+
+            return;
+        }
+
         var createAccountPrompt = new CreateAccountPrompt();
 
         var (username, password) = createAccountPrompt.Prompt();

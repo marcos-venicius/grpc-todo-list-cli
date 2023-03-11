@@ -1,4 +1,3 @@
-using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
 
@@ -71,7 +70,10 @@ public sealed class CommandReader
 
     public MenuOption? Read()
     {
-        var rootOptions = _menu.Options;
+        if (!HasPossibleOptions())
+            return null;
+
+        var rootOptions = Menu.Options;
         var currentArgPos = 0;
         var currentOptionPos = 0;
 
@@ -96,6 +98,11 @@ public sealed class CommandReader
         }
 
         return null;
+    }
+
+    public bool HasPossibleOptions()
+    {
+        return _args.Length >= 1;
     }
 
     public override string ToString()
