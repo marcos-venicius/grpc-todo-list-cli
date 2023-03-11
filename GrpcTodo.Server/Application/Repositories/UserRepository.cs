@@ -15,14 +15,15 @@ public sealed class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<Guid> CreateAsync(string username, string password)
+    public async Task<Guid> CreateAsync(string username, string password, Guid token)
     {
         using var connection = _context.CreateConnection();
 
         return await connection.ExecuteScalarAsync<Guid>(UserQueries.Create, new
         {
             username,
-            password
+            password,
+            token
         });
     }
 

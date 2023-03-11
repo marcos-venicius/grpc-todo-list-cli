@@ -34,9 +34,11 @@ public sealed class CreateUserUseCase
 
         var passwordHash = _passwordHashingService.Hash(input.Password);
 
-        await _userRepository.CreateAsync(input.Username, passwordHash);
+        var token = Guid.NewGuid();
 
-        return Guid.NewGuid().ToString();
+        await _userRepository.CreateAsync(input.Username, passwordHash, token);
+
+        return token.ToString();
     }
 }
 
