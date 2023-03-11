@@ -42,7 +42,7 @@ public sealed class AccountLoginUseCase : UseCase
 
             var response = await client.LoginAsync(request);
 
-            _configsManager.Set("auth_token", response.Token);
+            _configsManager.Set(Settings.AuthTokenKey, response.Token);
 
             ConsoleWritter.WriteSuccess("user logged in successfully");
         }

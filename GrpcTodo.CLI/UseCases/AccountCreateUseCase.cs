@@ -42,7 +42,7 @@ public sealed class AccountCreateUseCase : UseCase
 
             var response = await client.CreateAsync(request);
 
-            _configsManager.Set("auth_token", response.Token);
+            _configsManager.Set(Settings.AuthTokenKey, response.Token);
 
             ConsoleWritter.WriteSuccess("user created successfully");
         }

@@ -96,6 +96,34 @@ public sealed class ConfigsManager
         return GetDetailed(key)?.Value;
     }
 
+    public void Remove(string key)
+    {
+        var keyOnFile = GetDetailed(key);
+
+        if (keyOnFile is null)
+            return;
+
+        StringBuilder newFileContent = new();
+
+        var (value, _, lineIndex, lines) = keyOnFile;
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            if (i != lineIndex)
+            {
+                newFileContent.AppendLine(lines[i]);
+            }
+        }
+
+        using var fs = new FileStream(_configsFilePath, FileMode.Create, FileAccess.Write);
+
+        var bytes = Encoding.UTF8.GetBytes(newFileContent.ToString());
+
+        fs.Write(bytes);
+
+        fs.Close();
+    }
+
     public void Set(string key, string value)
     {
         var keyOnFile = GetDetailed(key);
