@@ -6,4 +6,5 @@ public sealed class User : Entity
 {
     public string Username { get; set; } = default!;
     public string Password { get; set; } = default!;
+    public Guid Token { get; set; } = default!;
 }

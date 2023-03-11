@@ -9,24 +9,24 @@ using GrpcTodo.CLI.UseCases.Common;
 
 namespace GrpcTodo.CLI.UseCases;
 
-public sealed class CreateAccountUseCase : UseCase
+public sealed class AccountLoginUseCase : UseCase
 {
-    public CreateAccountUseCase(ConfigsManager configsManager) : base(configsManager) { }
+    public AccountLoginUseCase(ConfigsManager configsManager) : base(configsManager) { }
 
     public async Task ExecuteAsync(Parameters parameters)
     {
         if (parameters.Has("--help"))
         {
-            var help = Menu.GetCommandHelp(Command.CreateAccount);
+            var help = Menu.GetCommandHelp(Command.Login);
 
             ConsoleWritter.Write(help);
 
             return;
         }
 
-        var createAccountPrompt = new CreateAccountPrompt();
+        var LoginAccountPrompt = new AccountLoginPrompt();
 
-        var (username, password) = createAccountPrompt.Prompt();
+        var (username, password) = LoginAccountPrompt.Prompt();
 
         try
         {
@@ -34,17 +34,17 @@ public sealed class CreateAccountUseCase : UseCase
 
             var client = new User.UserClient(channel);
 
-            var request = new UserCreateRequest
+            var request = new UserLoginRequest
             {
                 Name = username,
                 Password = password
             };
 
-            var response = await client.CreateAsync(request);
+            var response = await client.LoginAsync(request);
 
             _configsManager.Set("auth_token", response.Token);
 
-            ConsoleWritter.WriteSuccess("user created successfully");
+            ConsoleWritter.WriteSuccess("user logged in successfully");
         }
         catch (RpcException e)
         {

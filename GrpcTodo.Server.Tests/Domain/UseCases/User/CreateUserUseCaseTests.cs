@@ -73,7 +73,7 @@ public sealed partial class CreateUserUseCaseTests
 
         await sut.ExecuteAsync(input);
 
-        _userRepositoryMock.Verify(x => x.CreateAsync(input.Username, "PASSWORD_HASH"), Times.Once);
+        _userRepositoryMock.Verify(x => x.CreateAsync(input.Username, "PASSWORD_HASH", It.IsAny<Guid>()), Times.Once);
     }
 }
 

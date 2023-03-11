@@ -23,6 +23,7 @@ public sealed class Menu
                 },
                 new MenuOption {
                     Path = "login",
+                    IsImplemented = true,
                     Command = Command.Login,
                     Description = "make login",
                     Children = new()

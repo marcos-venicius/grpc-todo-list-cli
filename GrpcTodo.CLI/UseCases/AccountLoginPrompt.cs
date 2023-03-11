@@ -1,8 +1,9 @@
+
 using GrpcTodo.CLI.Utils;
 
 namespace GrpcTodo.CLI.UseCases;
 
-public sealed class CreateAccountPrompt
+public sealed class AccountLoginPrompt
 {
     private string _username = "";
     private string _password = "";
@@ -10,7 +11,7 @@ public sealed class CreateAccountPrompt
     private bool _usernameIsGet = false;
     private bool _passwordIsGet = false;
 
-    public CreateAccountPromptOutput Prompt()
+    public AccountLoginPromptOutput Prompt()
     {
         if (!_usernameIsGet)
         {
@@ -42,8 +43,8 @@ public sealed class CreateAccountPrompt
             _passwordIsGet = true;
         }
 
-        return new CreateAccountPromptOutput(_username, _password);
+        return new AccountLoginPromptOutput(_username, _password);
     }
 }
 
-public sealed record CreateAccountPromptOutput(string Username, string Password);
+public sealed record AccountLoginPromptOutput(string Username, string Password);

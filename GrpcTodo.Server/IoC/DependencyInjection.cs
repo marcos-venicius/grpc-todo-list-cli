@@ -22,6 +22,7 @@ public static class DependencyInjection
 
         // use cases
         services.AddScoped<CreateUserUseCase>();
+        services.AddScoped<UserLoginUseCase>();
 
         return services;
     }

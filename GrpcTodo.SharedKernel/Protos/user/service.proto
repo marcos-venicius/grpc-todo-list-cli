@@ -7,4 +7,5 @@ package grpc_todo.shared_kernel.protos.user;
 
 service User {
     rpc Create(requests.UserCreateRequest) returns (responses.UserCreateResponse);
+    rpc Login(requests.UserLoginRequest) returns (responses.UserLoginResponse);
 }

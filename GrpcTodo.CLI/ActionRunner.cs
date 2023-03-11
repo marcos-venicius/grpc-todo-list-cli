@@ -6,7 +6,8 @@ namespace GrpcTodo.CLI;
 
 internal class ActionRunner
 {
-    private readonly CreateAccountUseCase _createAccountUseCase;
+    private readonly AccountCreateUseCase _createAccountUseCase;
+    private readonly AccountLoginUseCase _accountLoginUseCase;
     private readonly ConfigsManager _configsManager;
     private readonly Parameters _parameters;
 
@@ -15,7 +16,8 @@ internal class ActionRunner
         _configsManager = configsManager;
         _parameters = parameters;
 
-        _createAccountUseCase = new CreateAccountUseCase(_configsManager);
+        _createAccountUseCase = new AccountCreateUseCase(_configsManager);
+        _accountLoginUseCase = new AccountLoginUseCase(_configsManager);
     }
 
     public async Task Run(Command? action, string command)
@@ -28,7 +30,7 @@ internal class ActionRunner
                 await _createAccountUseCase.ExecuteAsync(_parameters);
                 break;
             case Command.Login:
-                Console.WriteLine("make user login");
+                await _accountLoginUseCase.ExecuteAsync(_parameters);
                 break;
             case Command.ListAllTasks:
                 Console.WriteLine("list all tasks");

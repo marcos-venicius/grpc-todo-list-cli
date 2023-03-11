@@ -6,3 +6,8 @@ message UserCreateRequest {
     string name = 1;
     string password = 2;
 }
+
+message UserLoginRequest {
+    string name = 1;
+    string password = 2;
+}
