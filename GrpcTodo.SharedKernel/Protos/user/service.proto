@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+import "user/requests.proto";
+import "user/responses.proto";
+
+package grpc_todo.shared_kernel.protos.user;
+
+service User {
+    rpc Create(requests.UserCreateRequest) returns (responses.UserCreateResponse);
+    rpc Login(requests.UserLoginRequest) returns (responses.UserLoginResponse);
+}

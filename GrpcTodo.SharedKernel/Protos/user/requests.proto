@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package grpc_todo.shared_kernel.protos.user.requests;
+
+message UserCreateRequest {
+    string name = 1;
+    string password = 2;
+}
+
+message UserLoginRequest {
+    string name = 1;
+    string password = 2;
+}

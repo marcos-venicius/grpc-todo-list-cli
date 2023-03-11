@@ -1,0 +1,11 @@
+#!/bin/bash
+
+clear;
+
+dotnet build;
+
+if [[ ! -z "$1" ]]; then
+    dotnet test --no-build --no-restore --nologo --logger="console;verbosity=detailed" --filter FullyQualifiedName~$1 ./GrpcTodo.Server.Tests/GrpcTodo.Server.Tests.csproj;
+else
+    dotnet test --no-build --no-restore --nologo --logger="console;verbosity=detailed" ./GrpcTodo.Server.Tests/GrpcTodo.Server.Tests.csproj;
+fi
