@@ -23,7 +23,7 @@ public sealed class CreateUserUseCase
             throw new InvalidUserPasswordException("password too short. minimum of 8 digits");
     }
 
-    public async Task ExecuteAsync(CreateUserUseCaseInput input)
+    public async Task<string> ExecuteAsync(CreateUserUseCaseInput input)
     {
         Validate(input);
 
@@ -35,6 +35,8 @@ public sealed class CreateUserUseCase
         var passwordHash = _passwordHashingService.Hash(input.Password);
 
         await _userRepository.CreateAsync(input.Username, passwordHash);
+
+        return Guid.NewGuid().ToString();
     }
 }
 

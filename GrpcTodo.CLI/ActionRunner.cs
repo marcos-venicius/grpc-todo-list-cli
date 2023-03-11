@@ -15,7 +15,7 @@ internal class ActionRunner
         _configsManager = configsManager;
         _parameters = parameters;
 
-        _createAccountUseCase = new CreateAccountUseCase();
+        _createAccountUseCase = new CreateAccountUseCase(_configsManager);
     }
 
     public async Task Run(Command? action, string command)

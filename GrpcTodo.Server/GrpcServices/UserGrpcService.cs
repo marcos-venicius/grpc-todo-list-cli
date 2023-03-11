@@ -19,8 +19,8 @@ public sealed class UserGrpcService : User.UserBase
     {
         var input = new CreateUserUseCaseInput(request.Name, request.Password);
 
-        await _createUserUseCase.ExecuteAsync(input);
+        var token = await _createUserUseCase.ExecuteAsync(input);
 
-        return new UserCreateResponse { Token = "" };
+        return new UserCreateResponse { Token = token };
     }
 }
