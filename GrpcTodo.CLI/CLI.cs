@@ -9,6 +9,7 @@ public sealed class CLI
 {
     private readonly string[] _args;
     private readonly ArgsParams _argsParams;
+    private readonly ConfigsManager _configsManager;
     public readonly Menu Menu;
 
     public CLI(string[] args)
@@ -16,6 +17,7 @@ public sealed class CLI
         _args = args;
         _argsParams = new ArgsParams(args);
         Menu = new Menu();
+        _configsManager = new ConfigsManager();
 
         _argsParams.Set(
             "--help",
@@ -31,13 +33,13 @@ public sealed class CLI
 
         try
         {
-            var actionRunner = new ActionRunner();
+            var actionRunner = new ActionRunner(_configsManager, parameters);
 
             if (commandReader.HasPossibleOptions())
             {
                 var menuOption = commandReader.Read();
 
-                await actionRunner.Run(menuOption?.Command, commandReader.ToString(), parameters);
+                await actionRunner.Run(menuOption?.Command, commandReader.ToString());
             }
             else
             {
