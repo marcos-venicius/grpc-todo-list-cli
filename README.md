@@ -78,6 +78,10 @@ add a new alias to update your token for example:
 @alias ut=account token update
 ```
 
+your config file should be like:
+
+![config file example](./docs/images/config-file-example.png "config file example")
+
 now in your CLI you have this alias enabled, use:
 
 ```shell
