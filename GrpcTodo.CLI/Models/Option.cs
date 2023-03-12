@@ -8,8 +8,13 @@ public sealed class MenuOption
     public Command? Command { get; set; }
 
     public required string Path { get; set; }
-    public required List<MenuOption> Children { get; set; }
+    public List<MenuOption> Children { get; set; }
     public bool IsImplemented { get; set; }
+
+    public MenuOption()
+    {
+        Children = new List<MenuOption>();
+    }
 
     public override string ToString()
     {

@@ -32,6 +32,9 @@ internal class ActionRunner
             case Command.Logout:
                 _accountLogoutUseCase.Execute();
                 break;
+            case Command.UpdateToken:
+                Console.WriteLine("update your token");
+                break;
             case Command.CreateAccount:
                 await _createAccountUseCase.ExecuteAsync(_parameters);
                 break;
