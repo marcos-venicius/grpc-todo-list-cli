@@ -1,5 +1,6 @@
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
+using GrpcTodo.CLI.Enums;
 
 namespace GrpcTodo.CLI.Services;
 
@@ -68,10 +69,60 @@ public sealed class CommandReader
         ConsoleWritter.WriteSuccess($@"did you mean ""{currentCommand}""", "tip");
     }
 
+    private List<(string path, MenuOption option)> ReadCommandsWithPaths(MenuOption option)
+    {
+        List<(string path, MenuOption command)> commandsWithPaths = new();
+
+        void ExtractOptions(List<MenuOption> options, string path, MenuOption? menuOption)
+        {
+            if (option.Path != path && menuOption is not null)
+                commandsWithPaths.Add((path, (MenuOption)menuOption));
+
+            foreach (var opt in options)
+            {
+                var pth = $"{path} {opt.Path}";
+
+                ExtractOptions(opt.Children, pth, opt);
+            }
+        }
+
+        ExtractOptions(option.Children, option.Path, option);
+
+        return commandsWithPaths;
+    }
+
     public MenuOption? Read()
     {
         if (!HasPossibleOptions())
             return null;
+
+        Dictionary<string, string> aliases = new()
+        {
+            { "atu", "account token update" }
+        };
+
+        List<(string path, MenuOption option)> commandsWithPaths = new();
+
+        foreach (var option in Menu.Options)
+        {
+            var optionCommandsWithPaths = ReadCommandsWithPaths(option);
+
+            commandsWithPaths.AddRange(optionCommandsWithPaths);
+        }
+
+        var alias = string.Join(' ', _args);
+
+        if (aliases.ContainsKey(alias))
+        {
+            foreach (var command in commandsWithPaths)
+            {
+                if (command.path == aliases[alias])
+                {
+                    Console.WriteLine($"alias {alias} executes the command {command.option.Command}");
+                    return command.option;
+                }
+            }
+        }
 
         var rootOptions = Menu.Options;
         var currentArgPos = 0;
