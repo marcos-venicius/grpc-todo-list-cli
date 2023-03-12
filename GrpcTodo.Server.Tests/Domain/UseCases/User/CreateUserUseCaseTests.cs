@@ -63,6 +63,12 @@ public sealed partial class CreateUserUseCaseTests
     [Fact]
     public async Task Should_Successfully_Create_A_New_User()
     {
+        var authToken = Guid.NewGuid();
+
+        _authTokenGeneratorMock
+            .Setup(x => x.Generate())
+            .Returns(authToken);
+
         _passwordHashingServiceMock
             .Setup(x => x.Hash(It.IsAny<string>()))
             .Returns("PASSWORD_HASH");
@@ -73,7 +79,7 @@ public sealed partial class CreateUserUseCaseTests
 
         await sut.ExecuteAsync(input);
 
-        _userRepositoryMock.Verify(x => x.CreateAsync(input.Username, "PASSWORD_HASH", It.IsAny<Guid>()), Times.Once);
+        _userRepositoryMock.Verify(x => x.CreateAsync(input.Username, "PASSWORD_HASH", authToken), Times.Once);
     }
 }
 
@@ -91,18 +97,21 @@ public sealed partial class CreateUserUseCaseTests
 {
     private readonly Mock<IPasswordHashingService> _passwordHashingServiceMock;
     private readonly Mock<IUserRepository> _userRepositoryMock;
+    private readonly Mock<IAuthTokenGenerator> _authTokenGeneratorMock;
 
     public CreateUserUseCaseTests()
     {
         _passwordHashingServiceMock = new Mock<IPasswordHashingService>();
         _userRepositoryMock = new Mock<IUserRepository>();
+        _authTokenGeneratorMock = new Mock<IAuthTokenGenerator>();
     }
 
     private CreateUserUseCase Sut()
     {
         return new CreateUserUseCase(
             _userRepositoryMock.Object,
-            _passwordHashingServiceMock.Object
+            _passwordHashingServiceMock.Object,
+            _authTokenGeneratorMock.Object
         );
     }
 }

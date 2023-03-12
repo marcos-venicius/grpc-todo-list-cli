@@ -36,4 +36,15 @@ public sealed class UserRepository : IUserRepository
             username = username.ToLower()
         });
     }
+
+    public async Task UpdateTokenAsync(Guid id, Guid token)
+    {
+        using var connection = _context.CreateConnection();
+
+        await connection.ExecuteAsync(UserQueries.UpdateToken, new
+        {
+            id,
+            token
+        });
+    }
 }
