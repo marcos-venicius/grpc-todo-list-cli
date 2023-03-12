@@ -9,5 +9,6 @@ public enum Command
     CreateTask,
     CompleteTask,
     UncompleteTask,
-    DeleteTask
+    DeleteTask,
+    UpdateToken
 }

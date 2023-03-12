@@ -18,23 +18,32 @@ public sealed class Menu
                     Description = "create new account",
                     Path = "create",
                     Command = Command.CreateAccount,
-                    Children = new (),
                     IsImplemented = true
                 },
                 new MenuOption {
                     Path = "login",
                     IsImplemented = true,
                     Command = Command.Login,
-                    Description = "make login",
-                    Children = new()
+                    Description = "make login"
                 },
                 new MenuOption {
                     Path = "logout",
                     IsImplemented = true,
                     Command = Command.Logout,
-                    Description = "make logout. signout from your account",
-                    Children = new ()
-                }
+                    Description = "make logout. signout from your account"
+                },
+                new MenuOption {
+                    Path = "token",
+                    IsImplemented = true,
+                    Children = new ()  {
+                        new MenuOption {
+                            IsImplemented = true,
+                            Path = "update",
+                            Command = Command.UpdateToken,
+                            Description = "hard update your auth token. generate a new one"
+                        }
+                    }
+                },
             }
         },
 
@@ -44,32 +53,27 @@ public sealed class Menu
                 new MenuOption {
                     Path = "create",
                     Command = Command.CreateTask,
-                    Description = "create a new task",
-                    Children = new()
+                    Description = "create a new task"
                 },
                 new MenuOption {
                     Path = "complete",
                     Command = Command.CompleteTask,
-                    Description = "complete a task",
-                    Children = new()
+                    Description = "complete a task"
                 },
                 new MenuOption {
                     Path = "uncomplete",
                     Command = Command.UncompleteTask,
-                    Description = "uncomplete a task",
-                    Children = new()
+                    Description = "uncomplete a task"
                 },
                 new MenuOption {
                     Path = "list",
                     Command = Command.ListAllTasks,
-                    Description = "list all tasks",
-                    Children = new()
+                    Description = "list all tasks"
                 },
                 new MenuOption {
                     Path = "delete",
                     Command = Command.DeleteTask,
-                    Description = "delete a task",
-                    Children = new()
+                    Description = "delete a task"
                 },
             }
         }
@@ -112,7 +116,7 @@ description: {menuOption.Description}
         {
             string tab = new string(' ', tabs);
 
-            string path = $"{tab} {option.Path}";
+            string path = $"{tab}{option.Path}";
 
             if (tabs == 0)
             {
@@ -125,7 +129,7 @@ description: {menuOption.Description}
                 ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is null);
 
             if (help && option.Description is not null)
-                ConsoleWritter.Write($@"{new string(' ', tabs)}{option.Description}", true);
+                ConsoleWritter.Write($"{tab}{option.Description}", true);
             else if (!help && option.Description is not null)
                 Console.WriteLine();
 

@@ -7,11 +7,16 @@ public sealed class CreateUserUseCase
 {
     private readonly IPasswordHashingService _passwordHashingService;
     private readonly IUserRepository _userRepository;
+    private readonly IAuthTokenGenerator _authTokenGenerator;
 
-    public CreateUserUseCase(IUserRepository userRepository, IPasswordHashingService passwordHashingService)
+    public CreateUserUseCase(
+        IUserRepository userRepository,
+        IPasswordHashingService passwordHashingService,
+        IAuthTokenGenerator authTokenGenerator)
     {
         _userRepository = userRepository;
         _passwordHashingService = passwordHashingService;
+        _authTokenGenerator = authTokenGenerator;
     }
 
     private void Validate(CreateUserUseCaseInput input)
@@ -34,7 +39,7 @@ public sealed class CreateUserUseCase
 
         var passwordHash = _passwordHashingService.Hash(input.Password);
 
-        var token = Guid.NewGuid();
+        var token = _authTokenGenerator.Generate();
 
         await _userRepository.CreateAsync(input.Username, passwordHash, token);
 

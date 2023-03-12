@@ -19,10 +19,12 @@ public static class DependencyInjection
 
         // services
         services.AddSingleton<IPasswordHashingService, Sha256PasswordHash>();
+        services.AddSingleton<IAuthTokenGenerator, AuthTokenGenerator>();
 
         // use cases
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<UserLoginUseCase>();
+        services.AddScoped<UpdateTokenUseCase>();
 
         return services;
     }

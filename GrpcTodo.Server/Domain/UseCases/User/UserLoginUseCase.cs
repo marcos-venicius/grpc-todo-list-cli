@@ -23,7 +23,7 @@ public sealed class UserLoginUseCase
             throw new InvalidUserPasswordException("password too short. minimum of 8 digits");
     }
 
-    public async Task<string> ExecuteAsync(UserLoginUseCaseInput input)
+    public async Task<Entities.User> ExecuteAsync(UserLoginUseCaseInput input)
     {
         Validate(input);
 
@@ -37,7 +37,7 @@ public sealed class UserLoginUseCase
         if (!userOnDatabase.Password.Equals(passwordHash))
             throw new UnauthorizedException("user and/or password are invalid");
 
-        return userOnDatabase.Token.ToString();
+        return userOnDatabase;
     }
 }
 

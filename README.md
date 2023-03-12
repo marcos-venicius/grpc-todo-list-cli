@@ -67,6 +67,9 @@ just add the class test name after the script name
 - account
   - create `create new account`
   - login `make login`
+  - logout `make logout. signout from your account`
+  - token
+    - update `hard update your auth token. generate a new one`
 - task
   - create `create a new task`
   - complete `complete a task`
