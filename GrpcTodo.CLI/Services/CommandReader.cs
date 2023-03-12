@@ -1,6 +1,5 @@
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
-using GrpcTodo.CLI.Enums;
 
 namespace GrpcTodo.CLI.Services;
 
@@ -91,38 +90,44 @@ public sealed class CommandReader
         return commandsWithPaths;
     }
 
+    private Dictionary<string, string> LoadAliases()
+    {
+        Dictionary<string, string> aliases = new()
+        {
+            { "atu", "account token update" },
+            { "logout", "account logout" },
+        };
+
+        return aliases;
+    }
+
+    public MenuOption? GetOptionByAlias()
+    {
+        var aliases = LoadAliases();
+
+        List<(string path, MenuOption option)> menuOptionsWithFullPath = new();
+
+        Menu.Options.ForEach(option => menuOptionsWithFullPath.AddRange(ReadCommandsWithPaths(option)));
+
+        var alias = string.Join(' ', _args);
+
+        if (aliases.ContainsKey(alias))
+            foreach (var menuOptionWithPath in menuOptionsWithFullPath)
+                if (menuOptionWithPath.path == aliases[alias])
+                    return menuOptionWithPath.option;
+
+        return null;
+    }
+
     public MenuOption? Read()
     {
         if (!HasPossibleOptions())
             return null;
 
-        Dictionary<string, string> aliases = new()
-        {
-            { "atu", "account token update" }
-        };
+        var optionViaAlias = GetOptionByAlias();
 
-        List<(string path, MenuOption option)> commandsWithPaths = new();
-
-        foreach (var option in Menu.Options)
-        {
-            var optionCommandsWithPaths = ReadCommandsWithPaths(option);
-
-            commandsWithPaths.AddRange(optionCommandsWithPaths);
-        }
-
-        var alias = string.Join(' ', _args);
-
-        if (aliases.ContainsKey(alias))
-        {
-            foreach (var command in commandsWithPaths)
-            {
-                if (command.path == aliases[alias])
-                {
-                    Console.WriteLine($"alias {alias} executes the command {command.option.Command}");
-                    return command.option;
-                }
-            }
-        }
+        if (optionViaAlias is not null)
+            return optionViaAlias;
 
         var rootOptions = Menu.Options;
         var currentArgPos = 0;
