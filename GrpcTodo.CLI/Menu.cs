@@ -31,18 +31,19 @@ public sealed class Menu
                     IsImplemented = true,
                     Command = Command.Logout,
                     Description = "make logout. signout from your account"
-                }
-            }
-        },
-
-        new MenuOption {
-            Path = "token",
-            Children = new ()  {
+                },
                 new MenuOption {
-                    Path = "update",
-                    Command = Command.UpdateToken,
-                    Description = "hard update your auth token. generate a new one"
-                }
+                    Path = "token",
+                    IsImplemented = true,
+                    Children = new ()  {
+                        new MenuOption {
+                            IsImplemented = true,
+                            Path = "update",
+                            Command = Command.UpdateToken,
+                            Description = "hard update your auth token. generate a new one"
+                        }
+                    }
+                },
             }
         },
 
@@ -115,7 +116,7 @@ description: {menuOption.Description}
         {
             string tab = new string(' ', tabs);
 
-            string path = $"{tab} {option.Path}";
+            string path = $"{tab}{option.Path}";
 
             if (tabs == 0)
             {
@@ -128,7 +129,7 @@ description: {menuOption.Description}
                 ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is null);
 
             if (help && option.Description is not null)
-                ConsoleWritter.Write($@"{new string(' ', tabs)}{option.Description}", true);
+                ConsoleWritter.Write($"{tab}{option.Description}", true);
             else if (!help && option.Description is not null)
                 Console.WriteLine();
 

@@ -97,9 +97,9 @@ public sealed partial class UserLoginUseCaseTests
 
         var sut = Sut();
 
-        var token = await sut.ExecuteAsync(input);
+        var user = await sut.ExecuteAsync(input);
 
-        Assert.Equal(guid.ToString(), token);
+        Assert.Equal(guid.ToString(), user.Token.ToString());
     }
 }
 

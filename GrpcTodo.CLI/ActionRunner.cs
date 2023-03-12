@@ -9,6 +9,7 @@ internal class ActionRunner
     private readonly AccountCreateUseCase _createAccountUseCase;
     private readonly AccountLoginUseCase _accountLoginUseCase;
     private readonly AccountLogoutUseCase _accountLogoutUseCase;
+    private readonly AccountUpdateTokenUseCase _accountUpdateTokenUseCase;
 
     private readonly ConfigsManager _configsManager;
     private readonly Parameters _parameters;
@@ -21,6 +22,7 @@ internal class ActionRunner
         _createAccountUseCase = new AccountCreateUseCase(_configsManager);
         _accountLoginUseCase = new AccountLoginUseCase(_configsManager);
         _accountLogoutUseCase = new AccountLogoutUseCase(_configsManager);
+        _accountUpdateTokenUseCase = new AccountUpdateTokenUseCase(_configsManager);
     }
 
     public async Task Run(Command? action, string command)
@@ -33,7 +35,7 @@ internal class ActionRunner
                 _accountLogoutUseCase.Execute();
                 break;
             case Command.UpdateToken:
-                Console.WriteLine("update your token");
+                await _accountUpdateTokenUseCase.ExecuteAsync(_parameters);
                 break;
             case Command.CreateAccount:
                 await _createAccountUseCase.ExecuteAsync(_parameters);

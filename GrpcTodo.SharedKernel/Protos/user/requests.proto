@@ -11,3 +11,8 @@ message UserLoginRequest {
     string name = 1;
     string password = 2;
 }
+
+message UserUpdateTokenRequest {
+    string name = 1;
+    string password = 2;
+}
