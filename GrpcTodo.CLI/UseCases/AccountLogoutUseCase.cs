@@ -12,7 +12,7 @@ public sealed class AccountLogoutUseCase : UseCase
     {
         try
         {
-            _configsManager.Remove(Settings.AuthTokenKey);
+            _configsManager.RemoveItem(ConfigKey.Item, Settings.AuthTokenKey);
 
             ConsoleWritter.WriteSuccess("user signed out successfully");
         }

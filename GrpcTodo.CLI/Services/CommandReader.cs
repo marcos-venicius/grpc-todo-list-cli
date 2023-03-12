@@ -1,3 +1,4 @@
+using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
 
@@ -7,9 +8,11 @@ public sealed class CommandReader
 {
     private readonly Menu _menu;
     private readonly string[] _args;
+    private readonly ConfigsManager _configsManager;
 
-    public CommandReader(Menu menu, string[] args)
+    public CommandReader(Menu menu, string[] args, ConfigsManager configsManager)
     {
+        _configsManager = configsManager;
         _args = args.Where(arg => !arg.StartsWith("--")).ToArray();
         _menu = menu;
     }
@@ -92,11 +95,14 @@ public sealed class CommandReader
 
     private Dictionary<string, string> LoadAliases()
     {
-        Dictionary<string, string> aliases = new()
+        var items = _configsManager.ReadPrefixes(ConfigKey.Alias);
+
+        Dictionary<string, string> aliases = new();
+
+        foreach (var item in items)
         {
-            { "atu", "account token update" },
-            { "logout", "account logout" },
-        };
+            aliases.TryAdd(item.key, item.value);
+        }
 
         return aliases;
     }

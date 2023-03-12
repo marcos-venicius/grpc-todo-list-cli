@@ -29,7 +29,7 @@ public sealed class CLI
     {
         var parameters = _argsParams.Read();
 
-        var commandReader = new CommandReader(Menu, _args);
+        var commandReader = new CommandReader(Menu, _args, _configsManager);
 
         try
         {

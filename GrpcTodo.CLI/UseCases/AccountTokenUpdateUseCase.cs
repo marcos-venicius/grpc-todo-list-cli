@@ -42,7 +42,7 @@ public sealed class AccountUpdateTokenUseCase : UseCase
 
             var response = await client.UpdateTokenAsync(request);
 
-            _configsManager.Set(Settings.AuthTokenKey, response.Token);
+            _configsManager.SetItem(ConfigKey.Item, Settings.AuthTokenKey, response.Token);
 
             ConsoleWritter.WriteSuccess("user auth token update sucessfully");
         }
