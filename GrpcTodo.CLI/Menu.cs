@@ -1,4 +1,3 @@
-using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
@@ -43,6 +42,31 @@ public sealed class Menu
                             Description = "hard update your auth token. generate a new one"
                         }
                     }
+                },
+            }
+        },
+
+        new MenuOption {
+            IsImplemented = true,
+            Path = "alias",
+            Children = new () {
+                new MenuOption {
+                    Path = "create",
+                    Command = Command.CreateAlias,
+                    Description = "create a new alias to any cli command",
+                    IsImplemented = true
+                },
+                new MenuOption {
+                    Path = "remove",
+                    Command = Command.RemoveAlias,
+                    Description = "remove an existing alias",
+                    IsImplemented = false
+                },
+                new MenuOption {
+                    Path = "list",
+                    Command = Command.ListAliases,
+                    Description = "list all available aliases",
+                    IsImplemented = false
                 },
             }
         },

@@ -3,11 +3,10 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcTodo.SharedKernel.Protos.User;
 using GrpcTodo.SharedKernel.Protos.User.Requests;
-using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases.Common;
 
-namespace GrpcTodo.CLI.UseCases;
+namespace GrpcTodo.CLI.UseCases.AccountLogin;
 
 public sealed class AccountLoginUseCase : UseCase
 {

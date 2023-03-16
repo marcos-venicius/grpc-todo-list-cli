@@ -5,9 +5,8 @@ using GrpcTodo.SharedKernel.Protos.User.Requests;
 using GrpcTodo.CLI.UseCases.Common;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Utils;
-using GrpcTodo.CLI.Enums;
 
-namespace GrpcTodo.CLI.UseCases;
+namespace GrpcTodo.CLI.UseCases.AccountTokenUpdate;
 
 public sealed class AccountUpdateTokenUseCase : UseCase
 {

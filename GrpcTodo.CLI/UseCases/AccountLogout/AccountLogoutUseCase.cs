@@ -2,7 +2,7 @@ using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases.Common;
 using GrpcTodo.CLI.Utils;
 
-namespace GrpcTodo.CLI.UseCases;
+namespace GrpcTodo.CLI.UseCases.AccountLogout;
 
 public sealed class AccountLogoutUseCase : UseCase
 {

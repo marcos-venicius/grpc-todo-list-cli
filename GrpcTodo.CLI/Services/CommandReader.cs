@@ -77,7 +77,7 @@ public sealed class CommandReader
 
         void ExtractOptions(List<MenuOption> options, string path, MenuOption? menuOption)
         {
-            if (option.Path != path && menuOption is not null)
+            if (option.Path != path && menuOption?.Command is not null)
                 commandsWithPaths.Add((path, (MenuOption)menuOption));
 
             foreach (var opt in options)
@@ -93,7 +93,7 @@ public sealed class CommandReader
         return commandsWithPaths;
     }
 
-    private Dictionary<string, string> LoadAliases()
+    public Dictionary<string, string> LoadAliases()
     {
         var items = _configsManager.ReadPrefixes(ConfigKey.Alias);
 
@@ -107,13 +107,16 @@ public sealed class CommandReader
         return aliases;
     }
 
+    public List<(string path, MenuOption option)> GetCommandsWithPaths()
+    {
+        return Menu.Options.SelectMany(ReadCommandsWithPaths).ToList();
+    }
+
     public MenuOption? GetOptionByAlias()
     {
         var aliases = LoadAliases();
 
-        List<(string path, MenuOption option)> menuOptionsWithFullPath = new();
-
-        Menu.Options.ForEach(option => menuOptionsWithFullPath.AddRange(ReadCommandsWithPaths(option)));
+        List<(string path, MenuOption option)> menuOptionsWithFullPath = GetCommandsWithPaths();
 
         var alias = string.Join(' ', _args);
 

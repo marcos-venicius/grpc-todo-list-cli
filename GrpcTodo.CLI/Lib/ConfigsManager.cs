@@ -1,5 +1,4 @@
 using System.Text;
-using GrpcTodo.CLI.Enums;
 
 namespace GrpcTodo.CLI.Lib;
 
@@ -86,10 +85,6 @@ public sealed class ConfigsManager
             {
                 var lineKey = GetKey(prefix, line);
 
-                Console.WriteLine(line);
-                Console.WriteLine(lineKey);
-                Console.WriteLine();
-
                 if (lineKey.value == key)
                 {
                     var value = GetValue(line, lineKey.index);
@@ -146,8 +141,6 @@ public sealed class ConfigsManager
         CreateConfigFilesIfNotExists();
 
         var keyOnFile = GetDetailed(prefix, key);
-
-        Console.WriteLine(keyOnFile);
 
         if (keyOnFile is null)
             return;

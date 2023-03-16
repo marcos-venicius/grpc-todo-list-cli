@@ -33,13 +33,13 @@ public sealed class CLI
 
         try
         {
-            var actionRunner = new ActionRunner(_configsManager, parameters);
+            var actionRunner = new ActionRunner(_configsManager, commandReader, parameters);
 
             if (commandReader.HasPossibleOptions())
             {
                 var menuOption = commandReader.Read();
 
-                await actionRunner.Run(menuOption?.Command, commandReader.ToString());
+                await actionRunner.Run(menuOption?.Command);
             }
             else
             {
