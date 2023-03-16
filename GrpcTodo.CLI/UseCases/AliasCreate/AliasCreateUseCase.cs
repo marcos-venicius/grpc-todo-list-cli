@@ -28,6 +28,9 @@ public sealed class AliasCreateUseCase : UseCase
 
         var command = prompt.PromptCommand(commandsWithPaths, commandsWithAlias);
 
+        // TODO: get the alias prompt
+        // TODO: save the alias to the config file
+
         Console.WriteLine($"choosed {command}");
     }
 }
