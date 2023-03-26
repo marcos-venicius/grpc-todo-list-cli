@@ -153,7 +153,7 @@ description: {menuOption.Description}
                 ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is not null);
 
             if (help && option.Description is not null)
-                ConsoleWritter.Write($"{tab}{option.Description}", true);
+                ConsoleWritter.Write($"{tab}{option.Description}");
             else if (!help && option.Description is not null)
                 Console.WriteLine();
 
