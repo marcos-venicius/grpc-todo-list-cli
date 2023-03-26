@@ -135,7 +135,7 @@ description: {menuOption.Description}
 
     private void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0, bool help = false)
     {
-        const int maxSpaceBetweenCommandAndDescription = 50;
+        const int maxSpaceBetweenCommandAndDescription = 30;
 
         foreach (var option in options)
         {

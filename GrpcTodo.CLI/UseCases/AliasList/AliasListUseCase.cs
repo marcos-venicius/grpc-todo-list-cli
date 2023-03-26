@@ -20,7 +20,7 @@ public class AliasListUseCase : UseCase
         var aliases = _commandReader.LoadAliases();
 
         foreach (var alias in aliases.Keys)
-            ConsoleWritter.WriteWithColor($"{alias,-50}  {aliases[alias],-100}", ConsoleColor.White);
+            ConsoleWritter.WriteWithColor($"{alias,-30}{aliases[alias],-30}", ConsoleColor.White);
 
         if (!aliases.Any())
             ConsoleWritter.Write("you not have any aliases");
