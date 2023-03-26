@@ -16,7 +16,7 @@ public static class ConsoleWritter
 
     public static void WriteWithColor(string line, ConsoleColor color, bool notBreakLine = false)
     {
-        Write(color, line, notBreakLine);
+        Write(color, line, !notBreakLine);
     }
 
     public static void WriteError(string line)
@@ -31,11 +31,11 @@ public static class ConsoleWritter
 
     public static void WriteInfo(string line, bool notBreakLine = false)
     {
-        Write(ConsoleColor.Blue, line, notBreakLine);
+        Write(ConsoleColor.Blue, line, !notBreakLine);
     }
 
     public static void Write(string line, bool notBreakLine = false)
     {
-        Write(ConsoleColor.White, line, notBreakLine);
+        Write(ConsoleColor.White, line, !notBreakLine);
     }
 }

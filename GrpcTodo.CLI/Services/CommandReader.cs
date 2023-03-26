@@ -1,3 +1,4 @@
+using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
 
@@ -7,9 +8,11 @@ public sealed class CommandReader
 {
     private readonly Menu _menu;
     private readonly string[] _args;
+    private readonly ConfigsManager _configsManager;
 
-    public CommandReader(Menu menu, string[] args)
+    public CommandReader(Menu menu, string[] args, ConfigsManager configsManager)
     {
+        _configsManager = configsManager;
         _args = args.Where(arg => !arg.StartsWith("--")).ToArray();
         _menu = menu;
     }
@@ -68,10 +71,72 @@ public sealed class CommandReader
         ConsoleWritter.WriteSuccess($@"did you mean ""{currentCommand}""", "tip");
     }
 
+    private List<(string path, MenuOption option)> ReadCommandsWithPaths(MenuOption option)
+    {
+        List<(string path, MenuOption command)> commandsWithPaths = new();
+
+        void ExtractOptions(List<MenuOption> options, string path, MenuOption? menuOption)
+        {
+            if (option.Path != path && menuOption?.Command is not null)
+                commandsWithPaths.Add((path, (MenuOption)menuOption));
+
+            foreach (var opt in options)
+            {
+                var pth = $"{path} {opt.Path}";
+
+                ExtractOptions(opt.Children, pth, opt);
+            }
+        }
+
+        ExtractOptions(option.Children, option.Path, option);
+
+        return commandsWithPaths;
+    }
+
+    public Dictionary<string, string> LoadAliases()
+    {
+        var items = _configsManager.ReadPrefixes(ConfigKey.Alias);
+
+        Dictionary<string, string> aliases = new();
+
+        foreach (var item in items)
+        {
+            aliases.TryAdd(item.key, item.value);
+        }
+
+        return aliases;
+    }
+
+    public List<(string path, MenuOption option)> GetCommandsWithPaths()
+    {
+        return Menu.Options.SelectMany(ReadCommandsWithPaths).ToList();
+    }
+
+    public MenuOption? GetOptionByAlias()
+    {
+        var aliases = LoadAliases();
+
+        List<(string path, MenuOption option)> menuOptionsWithFullPath = GetCommandsWithPaths();
+
+        var alias = string.Join(' ', _args);
+
+        if (aliases.ContainsKey(alias))
+            foreach (var menuOptionWithPath in menuOptionsWithFullPath)
+                if (menuOptionWithPath.path == aliases[alias])
+                    return menuOptionWithPath.option;
+
+        return null;
+    }
+
     public MenuOption? Read()
     {
         if (!HasPossibleOptions())
             return null;
+
+        var optionViaAlias = GetOptionByAlias();
+
+        if (optionViaAlias is not null)
+            return optionViaAlias;
 
         var rootOptions = Menu.Options;
         var currentArgPos = 0;

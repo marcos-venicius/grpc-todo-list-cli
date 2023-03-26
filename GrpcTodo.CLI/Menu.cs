@@ -1,4 +1,3 @@
-using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Utils;
@@ -15,7 +14,7 @@ public sealed class Menu
 
             Children = new () {
                 new MenuOption {
-                    Description = "create new account",
+                    Description = "create new account. example: gl account create",
                     Path = "create",
                     Command = Command.CreateAccount,
                     IsImplemented = true
@@ -24,13 +23,13 @@ public sealed class Menu
                     Path = "login",
                     IsImplemented = true,
                     Command = Command.Login,
-                    Description = "make login"
+                    Description = "make login. example: gl account login"
                 },
                 new MenuOption {
                     Path = "logout",
                     IsImplemented = true,
                     Command = Command.Logout,
-                    Description = "make logout. signout from your account"
+                    Description = "make logout. signout from your account. example: gl account logout"
                 },
                 new MenuOption {
                     Path = "token",
@@ -40,9 +39,34 @@ public sealed class Menu
                             IsImplemented = true,
                             Path = "update",
                             Command = Command.UpdateToken,
-                            Description = "hard update your auth token. generate a new one"
+                            Description = "hard update your auth token. generate a new one. example: gl account token update"
                         }
                     }
+                },
+            }
+        },
+
+        new MenuOption {
+            IsImplemented = true,
+            Path = "alias",
+            Children = new () {
+                new MenuOption {
+                    Path = "create",
+                    Command = Command.CreateAlias,
+                    Description = "create a new alias to any cli command. example: gl alias create",
+                    IsImplemented = true
+                },
+                new MenuOption {
+                    IsImplemented = true,
+                    Path = "remove",
+                    Command = Command.RemoveAlias,
+                    Description = "remove an existing alias. example: gl alias remove",
+                },
+                new MenuOption {
+                    Path = "list",
+                    Command = Command.ListAliases,
+                    Description = "list all available aliases. example: gl alias list",
+                    IsImplemented = true
                 },
             }
         },
@@ -112,26 +136,30 @@ description: {menuOption.Description}
 
     private void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0, bool help = false)
     {
+        const int maxSpaceBetweenCommandAndDescription = 30;
+
         foreach (var option in options)
         {
-            string tab = new string(' ', tabs);
-
-            string path = $"{tab}{option.Path}";
-
             if (tabs == 0)
-            {
                 Console.WriteLine();
-            }
+
+            Console.Write(new string(' ', tabs));
 
             if (option.IsImplemented)
-                ConsoleWritter.WriteWithColor(path, ConsoleColor.Green, option.Description is null);
+                ConsoleWritter.WriteWithColor(option.Path, ConsoleColor.Green, true);
             else
-                ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is null);
+                ConsoleWritter.WriteWithColor(option.Path, ConsoleColor.Red, true);
 
             if (help && option.Description is not null)
-                ConsoleWritter.Write($"{tab}{option.Description}", true);
-            else if (!help && option.Description is not null)
-                Console.WriteLine();
+            {
+                var offset = maxSpaceBetweenCommandAndDescription - tabs - option.Path.Length;
+
+                Console.Write(new string(' ', offset));
+
+                Console.Write(option.Description ?? "");
+            }
+
+            Console.WriteLine();
 
             if (option.Children.Any())
                 ShowAvailableOptionsRecursively(option.Children, tabs + 2, help);
@@ -140,7 +168,7 @@ description: {menuOption.Description}
 
     public void ShowAvailableOptions(Parameters parameters)
     {
-        ConsoleWritter.WriteWithColor("\nAVAILABLE COMMANDS:\n", ConsoleColor.DarkCyan);
+        ConsoleWritter.WriteWithColor("\nAVAILABLE COMMANDS", ConsoleColor.DarkCyan);
 
         ShowAvailableOptionsRecursively(Options, 0, parameters.Has("--help"));
 

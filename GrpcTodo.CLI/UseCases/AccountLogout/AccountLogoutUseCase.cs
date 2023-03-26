@@ -2,17 +2,17 @@ using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases.Common;
 using GrpcTodo.CLI.Utils;
 
-namespace GrpcTodo.CLI.UseCases;
+namespace GrpcTodo.CLI.UseCases.AccountLogout;
 
 public sealed class AccountLogoutUseCase : UseCase
 {
     public AccountLogoutUseCase(ConfigsManager configsManager) : base(configsManager) { }
 
-    public void Execute()
+    public override Task ExecuteAsync()
     {
         try
         {
-            _configsManager.Remove(Settings.AuthTokenKey);
+            _configsManager.RemoveItem(ConfigKey.Item, Settings.AuthTokenKey);
 
             ConsoleWritter.WriteSuccess("user signed out successfully");
         }
@@ -22,5 +22,7 @@ public sealed class AccountLogoutUseCase : UseCase
 
             ConsoleWritter.WriteError(message);
         }
+
+        return Task.CompletedTask;
     }
 }

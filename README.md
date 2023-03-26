@@ -62,6 +62,40 @@ just add the class test name after the script name
 
 ## Available CLI commands
 
+Now the CLI creates some default `aliases`
+
+- `logout` alias to: `account logout`
+- `login` alias to: `account login`
+- `signup` alias to: `account create`
+
+you can add your own aliases on config file manually
+
+to create a new aliase go to `C:\Users\<your_user>\.gl\configs`
+
+add a new alias to update your token for example:
+
+```shell
+@alias ut=account token update
+```
+
+your config file should be like:
+
+![config file example](./docs/images/config-file-example.png "config file example")
+
+now in your CLI you have this alias enabled, use:
+
+```shell
+gl ut
+```
+
+this alias will execute the `account token update` command.
+
+to see all available commands type:
+
+```shell
+gl --help
+```
+
 ![Available commands](./docs/images/available-commands.PNG "Available commands")
 
 - account

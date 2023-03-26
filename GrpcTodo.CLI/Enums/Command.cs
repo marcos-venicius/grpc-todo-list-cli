@@ -2,6 +2,9 @@ namespace GrpcTodo.CLI.Enums;
 
 public enum Command
 {
+    ListAliases,
+    RemoveAlias,
+    CreateAlias,
     CreateAccount,
     Login,
     Logout,

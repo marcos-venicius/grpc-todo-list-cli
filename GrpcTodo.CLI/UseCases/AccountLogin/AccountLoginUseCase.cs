@@ -3,19 +3,23 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcTodo.SharedKernel.Protos.User;
 using GrpcTodo.SharedKernel.Protos.User.Requests;
-using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases.Common;
 
-namespace GrpcTodo.CLI.UseCases;
+namespace GrpcTodo.CLI.UseCases.AccountLogin;
 
 public sealed class AccountLoginUseCase : UseCase
 {
-    public AccountLoginUseCase(ConfigsManager configsManager) : base(configsManager) { }
+    private readonly Parameters _parameters;
 
-    public async Task ExecuteAsync(Parameters parameters)
+    public AccountLoginUseCase(ConfigsManager configsManager, Parameters parameters) : base(configsManager)
     {
-        if (parameters.Has("--help"))
+        _parameters = parameters;
+    }
+
+    public override async Task ExecuteAsync()
+    {
+        if (_parameters.Has("--help"))
         {
             var help = Menu.GetCommandHelp(Command.Login);
 
@@ -42,7 +46,7 @@ public sealed class AccountLoginUseCase : UseCase
 
             var response = await client.LoginAsync(request);
 
-            _configsManager.Set(Settings.AuthTokenKey, response.Token);
+            _configsManager.SetItem(ConfigKey.Item, Settings.AuthTokenKey, response.Token);
 
             ConsoleWritter.WriteSuccess("user logged in successfully");
         }

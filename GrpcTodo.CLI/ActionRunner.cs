@@ -1,6 +1,12 @@
-using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Lib;
-using GrpcTodo.CLI.UseCases;
+using GrpcTodo.CLI.Services;
+using GrpcTodo.CLI.UseCases.AccountCreate;
+using GrpcTodo.CLI.UseCases.AccountLogin;
+using GrpcTodo.CLI.UseCases.AccountLogout;
+using GrpcTodo.CLI.UseCases.AccountTokenUpdate;
+using GrpcTodo.CLI.UseCases.AliasCreate;
+using GrpcTodo.CLI.UseCases.AliasList;
+using GrpcTodo.CLI.UseCases.AliasRemove;
 
 namespace GrpcTodo.CLI;
 
@@ -10,54 +16,62 @@ internal class ActionRunner
     private readonly AccountLoginUseCase _accountLoginUseCase;
     private readonly AccountLogoutUseCase _accountLogoutUseCase;
     private readonly AccountUpdateTokenUseCase _accountUpdateTokenUseCase;
+    private readonly AliasCreateUseCase _aliasCreateUseCase;
+    private readonly AliasListUseCase _aliasListUseCase;
+    private readonly AliasRemoveUseCase _aliasRemoveUseCase;
 
-    private readonly ConfigsManager _configsManager;
-    private readonly Parameters _parameters;
+    private readonly CommandReader _commandReader;
 
-    public ActionRunner(ConfigsManager configsManager, Parameters parameters)
+    public ActionRunner(ConfigsManager configsManager, CommandReader commandReader, Parameters parameters)
     {
-        _configsManager = configsManager;
-        _parameters = parameters;
+        _commandReader = commandReader;
 
-        _createAccountUseCase = new AccountCreateUseCase(_configsManager);
-        _accountLoginUseCase = new AccountLoginUseCase(_configsManager);
-        _accountLogoutUseCase = new AccountLogoutUseCase(_configsManager);
-        _accountUpdateTokenUseCase = new AccountUpdateTokenUseCase(_configsManager);
+        _createAccountUseCase = new AccountCreateUseCase(configsManager, parameters);
+        _accountLoginUseCase = new AccountLoginUseCase(configsManager, parameters);
+        _accountLogoutUseCase = new AccountLogoutUseCase(configsManager);
+        _accountUpdateTokenUseCase = new AccountUpdateTokenUseCase(configsManager, parameters);
+        _aliasCreateUseCase = new AliasCreateUseCase(configsManager, commandReader);
+        _aliasListUseCase = new AliasListUseCase(configsManager, commandReader);
+        _aliasRemoveUseCase = new AliasRemoveUseCase(configsManager, commandReader);
     }
 
-    public async Task Run(Command? action, string command)
+    public Task Run(Command? action)
     {
         switch (action)
         {
             case null:
-                throw new InvalidCommandException(@$"command ""{command}"" does not exists");
+                throw new InvalidCommandException(@$"command/alias ""{_commandReader}"" does not exists");
             case Command.Logout:
-                _accountLogoutUseCase.Execute();
-                break;
+                return _accountLogoutUseCase.ExecuteAsync();
             case Command.UpdateToken:
-                await _accountUpdateTokenUseCase.ExecuteAsync(_parameters);
-                break;
+                return _accountUpdateTokenUseCase.ExecuteAsync();
             case Command.CreateAccount:
-                await _createAccountUseCase.ExecuteAsync(_parameters);
-                break;
+                return _createAccountUseCase.ExecuteAsync();
             case Command.Login:
-                await _accountLoginUseCase.ExecuteAsync(_parameters);
-                break;
+                return _accountLoginUseCase.ExecuteAsync();
+            case Command.CreateAlias:
+                return _aliasCreateUseCase.ExecuteAsync();
+            case Command.ListAliases:
+                return _aliasListUseCase.ExecuteAsync();
+            case Command.RemoveAlias:
+                return _aliasRemoveUseCase.ExecuteAsync();
             case Command.ListAllTasks:
-                Console.WriteLine("list all tasks");
+                Console.WriteLine("no implemented yet: list all tasks");
                 break;
             case Command.CreateTask:
-                Console.WriteLine("create task");
+                Console.WriteLine("no implemented yet: create task");
                 break;
             case Command.CompleteTask:
-                Console.WriteLine("complete task");
+                Console.WriteLine("no implemented yet: complete task");
                 break;
             case Command.UncompleteTask:
-                Console.WriteLine("uncomplete task");
+                Console.WriteLine("no implemented yet: uncomplete task");
                 break;
             case Command.DeleteTask:
-                Console.WriteLine("delete task");
+                Console.WriteLine("no implemented yet: delete task");
                 break;
         }
+
+        return Task.CompletedTask;
     }
 }

@@ -3,19 +3,23 @@ using Grpc.Core;
 using Grpc.Net.Client;
 using GrpcTodo.SharedKernel.Protos.User;
 using GrpcTodo.SharedKernel.Protos.User.Requests;
-using GrpcTodo.CLI.Enums;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases.Common;
 
-namespace GrpcTodo.CLI.UseCases;
+namespace GrpcTodo.CLI.UseCases.AccountCreate;
 
 public sealed class AccountCreateUseCase : UseCase
 {
-    public AccountCreateUseCase(ConfigsManager configsManager) : base(configsManager) { }
+    private readonly Parameters _paramaters;
 
-    public async Task ExecuteAsync(Parameters parameters)
+    public AccountCreateUseCase(ConfigsManager configsManager, Parameters parameters) : base(configsManager)
     {
-        if (parameters.Has("--help"))
+        _paramaters = parameters;
+    }
+
+    public override async Task ExecuteAsync()
+    {
+        if (_paramaters.Has("--help"))
         {
             var help = Menu.GetCommandHelp(Command.CreateAccount);
 
@@ -42,7 +46,7 @@ public sealed class AccountCreateUseCase : UseCase
 
             var response = await client.CreateAsync(request);
 
-            _configsManager.Set(Settings.AuthTokenKey, response.Token);
+            _configsManager.SetItem(ConfigKey.Item, Settings.AuthTokenKey, response.Token);
 
             ConsoleWritter.WriteSuccess("user created successfully");
         }

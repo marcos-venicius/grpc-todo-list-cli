@@ -29,17 +29,17 @@ public sealed class CLI
     {
         var parameters = _argsParams.Read();
 
-        var commandReader = new CommandReader(Menu, _args);
+        var commandReader = new CommandReader(Menu, _args, _configsManager);
 
         try
         {
-            var actionRunner = new ActionRunner(_configsManager, parameters);
+            var actionRunner = new ActionRunner(_configsManager, commandReader, parameters);
 
             if (commandReader.HasPossibleOptions())
             {
                 var menuOption = commandReader.Read();
 
-                await actionRunner.Run(menuOption?.Command, commandReader.ToString());
+                await actionRunner.Run(menuOption?.Command);
             }
             else
             {

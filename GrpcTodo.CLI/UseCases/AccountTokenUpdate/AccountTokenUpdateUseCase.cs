@@ -5,17 +5,21 @@ using GrpcTodo.SharedKernel.Protos.User.Requests;
 using GrpcTodo.CLI.UseCases.Common;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Utils;
-using GrpcTodo.CLI.Enums;
 
-namespace GrpcTodo.CLI.UseCases;
+namespace GrpcTodo.CLI.UseCases.AccountTokenUpdate;
 
 public sealed class AccountUpdateTokenUseCase : UseCase
 {
-    public AccountUpdateTokenUseCase(ConfigsManager configsManager) : base(configsManager) { }
+    private readonly Parameters _parameters;
 
-    public async Task ExecuteAsync(Parameters parameters)
+    public AccountUpdateTokenUseCase(ConfigsManager configsManager, Parameters parameters) : base(configsManager)
     {
-        if (parameters.Has("--help"))
+        _parameters = parameters;
+    }
+
+    public override async Task ExecuteAsync()
+    {
+        if (_parameters.Has("--help"))
         {
             var help = Menu.GetCommandHelp(Command.UpdateToken);
 
@@ -42,7 +46,7 @@ public sealed class AccountUpdateTokenUseCase : UseCase
 
             var response = await client.UpdateTokenAsync(request);
 
-            _configsManager.Set(Settings.AuthTokenKey, response.Token);
+            _configsManager.SetItem(ConfigKey.Item, Settings.AuthTokenKey, response.Token);
 
             ConsoleWritter.WriteSuccess("user auth token update sucessfully");
         }
