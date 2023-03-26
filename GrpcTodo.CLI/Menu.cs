@@ -148,9 +148,9 @@ description: {menuOption.Description}
             }
 
             if (option.IsImplemented)
-                ConsoleWritter.WriteWithColor(path, ConsoleColor.Green, option.Description is null);
+                ConsoleWritter.WriteWithColor(path, ConsoleColor.Green, option.Description is not null);
             else
-                ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is null);
+                ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is not null);
 
             if (help && option.Description is not null)
                 ConsoleWritter.Write($"{tab}{option.Description}", true);
