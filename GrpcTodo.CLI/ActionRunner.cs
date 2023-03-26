@@ -6,6 +6,7 @@ using GrpcTodo.CLI.UseCases.AccountLogout;
 using GrpcTodo.CLI.UseCases.AccountTokenUpdate;
 using GrpcTodo.CLI.UseCases.AliasCreate;
 using GrpcTodo.CLI.UseCases.AliasList;
+using GrpcTodo.CLI.UseCases.AliasRemove;
 
 namespace GrpcTodo.CLI;
 
@@ -17,6 +18,7 @@ internal class ActionRunner
     private readonly AccountUpdateTokenUseCase _accountUpdateTokenUseCase;
     private readonly AliasCreateUseCase _aliasCreateUseCase;
     private readonly AliasListUseCase _aliasListUseCase;
+    private readonly AliasRemoveUseCase _aliasRemoveUseCase;
 
     private readonly CommandReader _commandReader;
 
@@ -30,35 +32,29 @@ internal class ActionRunner
         _accountUpdateTokenUseCase = new AccountUpdateTokenUseCase(configsManager, parameters);
         _aliasCreateUseCase = new AliasCreateUseCase(configsManager, commandReader);
         _aliasListUseCase = new AliasListUseCase(configsManager, commandReader);
+        _aliasRemoveUseCase = new AliasRemoveUseCase(configsManager, commandReader);
     }
 
-    public async Task Run(Command? action)
+    public Task Run(Command? action)
     {
         switch (action)
         {
             case null:
-                throw new InvalidCommandException(@$"command ""{_commandReader}"" does not exists");
+                throw new InvalidCommandException(@$"command/alias ""{_commandReader}"" does not exists");
             case Command.Logout:
-                await _accountLogoutUseCase.ExecuteAsync();
-                break;
+                return _accountLogoutUseCase.ExecuteAsync();
             case Command.UpdateToken:
-                await _accountUpdateTokenUseCase.ExecuteAsync();
-                break;
+                return _accountUpdateTokenUseCase.ExecuteAsync();
             case Command.CreateAccount:
-                await _createAccountUseCase.ExecuteAsync();
-                break;
+                return _createAccountUseCase.ExecuteAsync();
             case Command.Login:
-                await _accountLoginUseCase.ExecuteAsync();
-                break;
+                return _accountLoginUseCase.ExecuteAsync();
             case Command.CreateAlias:
-                await _aliasCreateUseCase.ExecuteAsync();
-                break;
+                return _aliasCreateUseCase.ExecuteAsync();
             case Command.ListAliases:
-                await _aliasListUseCase.ExecuteAsync();
-                break;
+                return _aliasListUseCase.ExecuteAsync();
             case Command.RemoveAlias:
-                Console.WriteLine("not implemented yet: remove an existing alias");
-                break;
+                return _aliasRemoveUseCase.ExecuteAsync();
             case Command.ListAllTasks:
                 Console.WriteLine("no implemented yet: list all tasks");
                 break;
@@ -75,5 +71,7 @@ internal class ActionRunner
                 Console.WriteLine("no implemented yet: delete task");
                 break;
         }
+
+        return Task.CompletedTask;
     }
 }

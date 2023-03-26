@@ -13,10 +13,7 @@ public abstract class UseCase
 
     public abstract Task ExecuteAsync();
 
-    private protected static Task Empty()
-    {
-        return Task.CompletedTask;
-    }
+    private protected static Task Void => Task.CompletedTask;
 }
 
 public abstract class UseCase<T> where T : notnull
@@ -29,4 +26,6 @@ public abstract class UseCase<T> where T : notnull
     }
 
     public abstract Task<T> ExecuteAsync();
+
+    private protected static Task Void => Task.CompletedTask;
 }

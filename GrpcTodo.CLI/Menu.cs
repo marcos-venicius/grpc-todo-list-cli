@@ -14,7 +14,7 @@ public sealed class Menu
 
             Children = new () {
                 new MenuOption {
-                    Description = "create new account",
+                    Description = "create new account. example: gl account create",
                     Path = "create",
                     Command = Command.CreateAccount,
                     IsImplemented = true
@@ -23,13 +23,13 @@ public sealed class Menu
                     Path = "login",
                     IsImplemented = true,
                     Command = Command.Login,
-                    Description = "make login"
+                    Description = "make login. example: gl account login"
                 },
                 new MenuOption {
                     Path = "logout",
                     IsImplemented = true,
                     Command = Command.Logout,
-                    Description = "make logout. signout from your account"
+                    Description = "make logout. signout from your account. example: gl account logout"
                 },
                 new MenuOption {
                     Path = "token",
@@ -39,7 +39,7 @@ public sealed class Menu
                             IsImplemented = true,
                             Path = "update",
                             Command = Command.UpdateToken,
-                            Description = "hard update your auth token. generate a new one"
+                            Description = "hard update your auth token. generate a new one. example: gl account token update"
                         }
                     }
                 },
@@ -53,18 +53,19 @@ public sealed class Menu
                 new MenuOption {
                     Path = "create",
                     Command = Command.CreateAlias,
-                    Description = "create a new alias to any cli command",
+                    Description = "create a new alias to any cli command. example: gl alias create",
                     IsImplemented = true
                 },
                 new MenuOption {
+                    IsImplemented = true,
                     Path = "remove",
                     Command = Command.RemoveAlias,
-                    Description = "remove an existing alias",
+                    Description = "remove an existing alias. example: gl alias remove",
                 },
                 new MenuOption {
                     Path = "list",
                     Command = Command.ListAliases,
-                    Description = "list all available aliases",
+                    Description = "list all available aliases. example: gl alias list",
                     IsImplemented = true
                 },
             }

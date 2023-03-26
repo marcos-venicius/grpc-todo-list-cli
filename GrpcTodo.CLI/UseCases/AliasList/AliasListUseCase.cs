@@ -27,6 +27,6 @@ public class AliasListUseCase : UseCase
 
         Console.WriteLine();
 
-        return Empty();
+        return Void;
     }
 }

@@ -10,6 +10,8 @@ public abstract class Prompt
         public bool RemoveWhitespaces { get; init; } = false;
         public bool ShouldBeNumber { get; init; } = false;
         public bool ShouldBeSingleWord { get; init; } = false;
+        public Func<string, bool>? Custom { get; init; }
+        public string? CustomMessage { get; init; }
     }
 
     private protected string Read(string input, PromptOptions? options = null)
@@ -54,6 +56,13 @@ public abstract class Prompt
         if (shouldBeSingleWord && data.Split(" ").Length > 1)
         {
             ConsoleWritter.WriteError("should be a single word");
+
+            return Read(input, options);
+        }
+
+        if (options?.Custom is not null && options.Custom(data))
+        {
+            ConsoleWritter.WriteError(options.CustomMessage ?? "something went wrong");
 
             return Read(input, options);
         }
