@@ -135,26 +135,30 @@ description: {menuOption.Description}
 
     private void ShowAvailableOptionsRecursively(List<MenuOption> options, int tabs = 0, bool help = false)
     {
+        const int maxSpaceBetweenCommandAndDescription = 50;
+
         foreach (var option in options)
         {
-            string tab = new string(' ', tabs);
-
-            string path = $"{tab}{option.Path}";
-
             if (tabs == 0)
-            {
                 Console.WriteLine();
-            }
+
+            Console.Write(new string(' ', tabs));
 
             if (option.IsImplemented)
-                ConsoleWritter.WriteWithColor(path, ConsoleColor.Green, option.Description is not null);
+                ConsoleWritter.WriteWithColor(option.Path, ConsoleColor.Green, true);
             else
-                ConsoleWritter.WriteWithColor(path, ConsoleColor.Red, option.Description is not null);
+                ConsoleWritter.WriteWithColor(option.Path, ConsoleColor.Red, true);
 
             if (help && option.Description is not null)
-                ConsoleWritter.Write($"{tab}{option.Description}");
-            else if (!help && option.Description is not null)
-                Console.WriteLine();
+            {
+                var offset = maxSpaceBetweenCommandAndDescription - tabs - option.Path.Length;
+
+                Console.Write(new string(' ', offset));
+
+                Console.Write(option.Description ?? "");
+            }
+
+            Console.WriteLine();
 
             if (option.Children.Any())
                 ShowAvailableOptionsRecursively(option.Children, tabs + 2, help);
@@ -163,7 +167,7 @@ description: {menuOption.Description}
 
     public void ShowAvailableOptions(Parameters parameters)
     {
-        ConsoleWritter.WriteWithColor("\nAVAILABLE COMMANDS:\n", ConsoleColor.DarkCyan);
+        ConsoleWritter.WriteWithColor("\nAVAILABLE COMMANDS", ConsoleColor.DarkCyan);
 
         ShowAvailableOptionsRecursively(Options, 0, parameters.Has("--help"));
 
