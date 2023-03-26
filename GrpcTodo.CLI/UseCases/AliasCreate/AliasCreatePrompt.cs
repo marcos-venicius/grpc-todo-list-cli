@@ -5,6 +5,15 @@ namespace GrpcTodo.CLI.UseCases.AliasCreate;
 
 public sealed class AliasCreatePrompt : Prompt
 {
+    public string PromptAlias()
+    {
+        return Read("alias name: ", new PromptOptions
+        {
+            RemoveWhitespaces = true,
+            ShouldBeSingleWord = true
+        });
+    }
+
     public Command PromptCommand(List<(string path, Models.MenuOption option)> commandsWithPaths, Dictionary<string, bool> commandsWithALias)
     {
         ConsoleWritter.Write("\nChose a command to create an alias:\n\n");
@@ -19,9 +28,9 @@ public sealed class AliasCreatePrompt : Prompt
             var index = (i + 1).ToString().PadLeft(2, '0');
 
             if (commandsWithALias.ContainsKey(commandWithPath.path))
-                ConsoleWritter.WriteWithColor($"[XX] {commandWithPath.path,-50}  {commandWithPath.option.Description,-100}\n", ConsoleColor.DarkYellow);
+                ConsoleWritter.WriteWithColor($"[XX] {commandWithPath.path,-50}  {commandWithPath.option.Description,-100}", ConsoleColor.DarkYellow);
             else
-                ConsoleWritter.WriteWithColor($"[{index}] {commandWithPath.path,-50}  {commandWithPath.option.Description,-100}\n", ConsoleColor.Green);
+                ConsoleWritter.WriteWithColor($"[{index}] {commandWithPath.path,-50}  {commandWithPath.option.Description,-100}", ConsoleColor.Green);
         }
 
         var commandIndex = int.Parse(Read("command id: ", new PromptOptions
