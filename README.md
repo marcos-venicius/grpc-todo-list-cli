@@ -4,7 +4,7 @@
   <img src="./docs/images/structure.png">
 </div>
 
-## Demo
+## Demonstration (outdated)
 
 [![view demo](./docs/images/video-placeholder.PNG)](https://www.youtube.com/watch?v=fMegmXOOVV0)
 
@@ -104,6 +104,10 @@ gl --help
   - logout `make logout. signout from your account`
   - token
     - update `hard update your auth token. generate a new one`
+- alias
+  - create `create new alias`
+  - remove `remove an existing alias`
+  - list `list all available aliases`
 - task
   - create `create a new task`
   - complete `complete a task`
