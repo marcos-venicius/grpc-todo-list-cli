@@ -14,7 +14,7 @@ public sealed class AliasCreateUseCase : UseCase
         _commandReader = commandReader;
     }
 
-    public void Execute()
+    public override Task ExecuteAsync()
     {
         var allAliasesInConfigFile = _commandReader.LoadAliases();
 
@@ -36,7 +36,7 @@ public sealed class AliasCreateUseCase : UseCase
         {
             ConsoleWritter.WriteWithColor("no", ConsoleColor.Red);
             ConsoleWritter.WriteError(@$"this alias already exists to the command ""{commandAlias}""");
-            return;
+            return Task.CompletedTask;
         }
 
         ConsoleWritter.WriteWithColor("yes", ConsoleColor.Green);
@@ -51,10 +51,12 @@ public sealed class AliasCreateUseCase : UseCase
 
                 ConsoleWritter.WriteSuccess("alias created successfully");
 
-                return;
+                return Task.CompletedTask;
             }
         }
 
         ConsoleWritter.WriteError("cannot found command path");
+
+        return Task.CompletedTask;
     }
 }

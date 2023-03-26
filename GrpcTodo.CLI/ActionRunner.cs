@@ -5,6 +5,7 @@ using GrpcTodo.CLI.UseCases.AccountLogin;
 using GrpcTodo.CLI.UseCases.AccountLogout;
 using GrpcTodo.CLI.UseCases.AccountTokenUpdate;
 using GrpcTodo.CLI.UseCases.AliasCreate;
+using GrpcTodo.CLI.UseCases.AliasList;
 
 namespace GrpcTodo.CLI;
 
@@ -15,22 +16,20 @@ internal class ActionRunner
     private readonly AccountLogoutUseCase _accountLogoutUseCase;
     private readonly AccountUpdateTokenUseCase _accountUpdateTokenUseCase;
     private readonly AliasCreateUseCase _aliasCreateUseCase;
+    private readonly AliasListUseCase _aliasListUseCase;
 
     private readonly CommandReader _commandReader;
-    private readonly ConfigsManager _configsManager;
-    private readonly Parameters _parameters;
 
     public ActionRunner(ConfigsManager configsManager, CommandReader commandReader, Parameters parameters)
     {
         _commandReader = commandReader;
-        _configsManager = configsManager;
-        _parameters = parameters;
 
-        _createAccountUseCase = new AccountCreateUseCase(_configsManager);
-        _accountLoginUseCase = new AccountLoginUseCase(_configsManager);
-        _accountLogoutUseCase = new AccountLogoutUseCase(_configsManager);
-        _accountUpdateTokenUseCase = new AccountUpdateTokenUseCase(_configsManager);
-        _aliasCreateUseCase = new AliasCreateUseCase(_configsManager, commandReader);
+        _createAccountUseCase = new AccountCreateUseCase(configsManager, parameters);
+        _accountLoginUseCase = new AccountLoginUseCase(configsManager, parameters);
+        _accountLogoutUseCase = new AccountLogoutUseCase(configsManager);
+        _accountUpdateTokenUseCase = new AccountUpdateTokenUseCase(configsManager, parameters);
+        _aliasCreateUseCase = new AliasCreateUseCase(configsManager, commandReader);
+        _aliasListUseCase = new AliasListUseCase(configsManager, commandReader);
     }
 
     public async Task Run(Command? action)
@@ -40,19 +39,22 @@ internal class ActionRunner
             case null:
                 throw new InvalidCommandException(@$"command ""{_commandReader}"" does not exists");
             case Command.Logout:
-                _accountLogoutUseCase.Execute();
+                await _accountLogoutUseCase.ExecuteAsync();
                 break;
             case Command.UpdateToken:
-                await _accountUpdateTokenUseCase.ExecuteAsync(_parameters);
+                await _accountUpdateTokenUseCase.ExecuteAsync();
                 break;
             case Command.CreateAccount:
-                await _createAccountUseCase.ExecuteAsync(_parameters);
+                await _createAccountUseCase.ExecuteAsync();
                 break;
             case Command.Login:
-                await _accountLoginUseCase.ExecuteAsync(_parameters);
+                await _accountLoginUseCase.ExecuteAsync();
                 break;
             case Command.CreateAlias:
-                _aliasCreateUseCase.Execute();
+                await _aliasCreateUseCase.ExecuteAsync();
+                break;
+            case Command.ListAliases:
+                await _aliasListUseCase.ExecuteAsync();
                 break;
             case Command.RemoveAlias:
                 Console.WriteLine("not implemented yet: remove an existing alias");

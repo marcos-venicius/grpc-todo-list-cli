@@ -10,11 +10,16 @@ namespace GrpcTodo.CLI.UseCases.AccountLogin;
 
 public sealed class AccountLoginUseCase : UseCase
 {
-    public AccountLoginUseCase(ConfigsManager configsManager) : base(configsManager) { }
+    private readonly Parameters _parameters;
 
-    public async Task ExecuteAsync(Parameters parameters)
+    public AccountLoginUseCase(ConfigsManager configsManager, Parameters parameters) : base(configsManager)
     {
-        if (parameters.Has("--help"))
+        _parameters = parameters;
+    }
+
+    public override async Task ExecuteAsync()
+    {
+        if (_parameters.Has("--help"))
         {
             var help = Menu.GetCommandHelp(Command.Login);
 

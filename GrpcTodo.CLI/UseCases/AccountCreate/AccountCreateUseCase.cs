@@ -10,11 +10,16 @@ namespace GrpcTodo.CLI.UseCases.AccountCreate;
 
 public sealed class AccountCreateUseCase : UseCase
 {
-    public AccountCreateUseCase(ConfigsManager configsManager) : base(configsManager) { }
+    private readonly Parameters _paramaters;
 
-    public async Task ExecuteAsync(Parameters parameters)
+    public AccountCreateUseCase(ConfigsManager configsManager, Parameters parameters) : base(configsManager)
     {
-        if (parameters.Has("--help"))
+        _paramaters = parameters;
+    }
+
+    public override async Task ExecuteAsync()
+    {
+        if (_paramaters.Has("--help"))
         {
             var help = Menu.GetCommandHelp(Command.CreateAccount);
 

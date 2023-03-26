@@ -60,13 +60,12 @@ public sealed class Menu
                     Path = "remove",
                     Command = Command.RemoveAlias,
                     Description = "remove an existing alias",
-                    IsImplemented = false
                 },
                 new MenuOption {
                     Path = "list",
                     Command = Command.ListAliases,
                     Description = "list all available aliases",
-                    IsImplemented = false
+                    IsImplemented = true
                 },
             }
         },

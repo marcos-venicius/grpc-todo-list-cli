@@ -8,7 +8,7 @@ public sealed class AccountLogoutUseCase : UseCase
 {
     public AccountLogoutUseCase(ConfigsManager configsManager) : base(configsManager) { }
 
-    public void Execute()
+    public override Task ExecuteAsync()
     {
         try
         {
@@ -22,5 +22,7 @@ public sealed class AccountLogoutUseCase : UseCase
 
             ConsoleWritter.WriteError(message);
         }
+
+        return Task.CompletedTask;
     }
 }
