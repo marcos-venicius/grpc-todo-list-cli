@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+package grpc_todo.shared_kernel.protos.task.responses;
+
+message TaskCreateResponse {
+    string id = 1;
+}
