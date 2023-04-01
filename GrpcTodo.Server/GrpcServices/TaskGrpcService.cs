@@ -23,8 +23,7 @@ public sealed class TaskGrpcService : TaskItem.TaskItemBase
 
     public override async Task<TaskCreateResponse> Create(TaskCreateRequest request, ServerCallContext context)
     {
-        // TODO: get credentials from request
-        var credentials = new Credentials(Guid.NewGuid());
+        var credentials = new Credentials(request.AccessToken);
 
         var input = new CreateTaskUseCaseInput(request.Name);
 

@@ -3,6 +3,6 @@ syntax = "proto3";
 package grpc_todo.shared_kernel.protos.tasks.requests;
 
 message TaskCreateRequest {
-    string userId = 1;
+    string accessToken = 1;
     string name = 2;
 }
