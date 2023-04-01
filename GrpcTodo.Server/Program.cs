@@ -32,6 +32,7 @@ builder.Services.AddGrpc();
 var app = builder.Build();
 
 app.MapGrpcService<UserGrpcService>();
+app.MapGrpcService<TaskGrpcService>();
 
 if (app.Environment.IsDevelopment())
 {

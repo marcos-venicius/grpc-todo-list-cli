@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package grpc_todo.shared_kernel.protos.task.responses;
+package grpc_todo.shared_kernel.protos.tasks.responses;
 
 message TaskCreateResponse {
     string id = 1;

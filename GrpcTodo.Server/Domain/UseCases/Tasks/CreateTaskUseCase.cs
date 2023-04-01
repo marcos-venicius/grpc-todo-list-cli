@@ -25,11 +25,11 @@ public sealed class CreateTaskUseCase
             throw new InvalidTaskNameException("invalid task name");
     }
 
-    public async Task<Guid> ExecuteAsync(CreateTaskUseCaseInput input)
+    public async Task<Guid> ExecuteAsync(Guid userId, CreateTaskUseCaseInput input)
     {
         Validate(input);
 
-        var userOnDatabase = await _userRepository.FindByIdAsync(input.UserId);
+        var userOnDatabase = await _userRepository.FindByIdAsync(userId);
 
         if (userOnDatabase is null)
             throw new NotFoundException("this user does not exists");
@@ -41,10 +41,10 @@ public sealed class CreateTaskUseCase
 
         var guid = _guidGenerator.Generate();
 
-        await _taskRepository.CreateAsync(guid, input.Name, input.UserId);
+        await _taskRepository.CreateAsync(guid, input.Name, userId);
 
         return guid;
     }
 }
 
-public sealed record CreateTaskUseCaseInput(Guid UserId, string Name);
+public sealed record CreateTaskUseCaseInput(string Name);

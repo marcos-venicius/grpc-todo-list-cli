@@ -3,8 +3,9 @@ syntax = "proto3";
 import "task/requests.proto";
 import "task/responses.proto";
 
-package grpc_todo.shared_kernel.protos.task;
+package grpc_todo.shared_kernel.protos.tasks;
 
-service Task {
+
+service TaskItem {
     rpc Create(requests.TaskCreateRequest) returns (responses.TaskCreateResponse);
 }
