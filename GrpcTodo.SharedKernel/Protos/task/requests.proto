@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package grpc_todo.shared_kernel.protos.tasks.requests;
+
+message TaskCreateRequest {
+    string accessToken = 1;
+    string name = 2;
+}

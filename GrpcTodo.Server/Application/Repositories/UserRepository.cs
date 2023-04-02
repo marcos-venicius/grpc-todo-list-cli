@@ -27,6 +27,26 @@ public sealed class UserRepository : IUserRepository
         });
     }
 
+    public async Task<User?> FindByAccessTokenAsync(Guid accessToken)
+    {
+        using var connection = _context.CreateConnection();
+
+        return await connection.QueryFirstOrDefaultAsync<User>(UserQueries.FindByAccessToken, new
+        {
+            accessToken
+        });
+    }
+
+    public async Task<User?> FindByIdAsync(Guid id)
+    {
+        using var connection = _context.CreateConnection();
+
+        return await connection.QueryFirstOrDefaultAsync<User>(UserQueries.FindById, new
+        {
+            id
+        });
+    }
+
     public async Task<User?> FindByNameAsync(string username)
     {
         using var connection = _context.CreateConnection();

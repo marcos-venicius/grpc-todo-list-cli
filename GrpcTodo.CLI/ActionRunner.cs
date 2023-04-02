@@ -7,6 +7,7 @@ using GrpcTodo.CLI.UseCases.AccountTokenUpdate;
 using GrpcTodo.CLI.UseCases.AliasCreate;
 using GrpcTodo.CLI.UseCases.AliasList;
 using GrpcTodo.CLI.UseCases.AliasRemove;
+using GrpcTodo.CLI.UseCases.TaskCreate;
 
 namespace GrpcTodo.CLI;
 
@@ -19,6 +20,7 @@ internal class ActionRunner
     private readonly AliasCreateUseCase _aliasCreateUseCase;
     private readonly AliasListUseCase _aliasListUseCase;
     private readonly AliasRemoveUseCase _aliasRemoveUseCase;
+    private readonly TaskCreateUseCase _taskCreateUseCase;
 
     private readonly CommandReader _commandReader;
 
@@ -33,6 +35,7 @@ internal class ActionRunner
         _aliasCreateUseCase = new AliasCreateUseCase(configsManager, commandReader);
         _aliasListUseCase = new AliasListUseCase(configsManager, commandReader);
         _aliasRemoveUseCase = new AliasRemoveUseCase(configsManager, commandReader);
+        _taskCreateUseCase = new TaskCreateUseCase(configsManager);
     }
 
     public Task Run(Command? action)
@@ -55,11 +58,10 @@ internal class ActionRunner
                 return _aliasListUseCase.ExecuteAsync();
             case Command.RemoveAlias:
                 return _aliasRemoveUseCase.ExecuteAsync();
+            case Command.CreateTask:
+                return _taskCreateUseCase.ExecuteAsync();
             case Command.ListAllTasks:
                 Console.WriteLine("no implemented yet: list all tasks");
-                break;
-            case Command.CreateTask:
-                Console.WriteLine("no implemented yet: create task");
                 break;
             case Command.CompleteTask:
                 Console.WriteLine("no implemented yet: complete task");
