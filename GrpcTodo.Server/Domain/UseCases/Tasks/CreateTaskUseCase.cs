@@ -41,6 +41,8 @@ public sealed class CreateTaskUseCase
 
         var guid = _guidGenerator.Generate();
 
+        Console.WriteLine("guid: {0}", guid);
+
         await _taskRepository.CreateAsync(guid, input.Name, userId);
 
         return guid;

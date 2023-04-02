@@ -18,12 +18,12 @@ public sealed class _4_Create_Task_Table : Migration
                 .NotNullable()
                 .PrimaryKey()
                 .Unique()
-            .WithColumn("userId")
+            .WithColumn("user_id")
                 .AsGuid()
                 .NotNullable()
                 .ForeignKey("user", "id")
             .WithColumn("name").AsString().NotNullable().Unique()
             .WithColumn("completed").AsBoolean().WithDefaultValue(false)
-            .WithColumn("createdAt").AsDateTimeOffset();
+            .WithColumn("created_at").AsDateTimeOffset();
     }
 }

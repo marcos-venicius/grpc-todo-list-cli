@@ -5,6 +5,7 @@ using GrpcTodo.Server.Domain.Repositories;
 using GrpcTodo.Server.Domain.Services;
 using GrpcTodo.Server.Domain.Middleware;
 using GrpcTodo.Server.Domain.UseCases.User;
+using GrpcTodo.Server.Domain.UseCases.Tasks;
 using GrpcTodo.Server.Infra.Context;
 using GrpcTodo.Server.Infra.Interfaces;
 
@@ -18,6 +19,7 @@ public static class DependencyInjection
 
         // repositories
         services.AddTransient<IUserRepository, UserRepository>();
+        services.AddTransient<ITaskRepository, TaskRepository>();
 
         // services
         services.AddSingleton<IPasswordHashingService, Sha256PasswordHash>();
@@ -28,6 +30,7 @@ public static class DependencyInjection
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<UserLoginUseCase>();
         services.AddScoped<UpdateTokenUseCase>();
+        services.AddScoped<CreateTaskUseCase>();
 
         // middleware
         services.AddTransient<IAuthMiddleware, AuthMiddleware>();

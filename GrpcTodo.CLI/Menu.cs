@@ -73,8 +73,10 @@ public sealed class Menu
 
         new MenuOption {
             Path = "task",
+            IsImplemented = true,
             Children = new () {
                 new MenuOption {
+                    IsImplemented = true,
                     Path = "create",
                     Command = Command.CreateTask,
                     Description = "create a new task"

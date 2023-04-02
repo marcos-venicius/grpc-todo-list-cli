@@ -5,6 +5,8 @@ using GrpcTodo.Server.Infra;
 using GrpcTodo.Server.IoC;
 using Serilog;
 
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging(c => c.AddFluentMigratorConsole())
