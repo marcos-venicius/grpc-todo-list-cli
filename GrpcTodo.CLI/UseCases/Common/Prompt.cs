@@ -12,6 +12,8 @@ public abstract class Prompt
         public bool ShouldBeSingleWord { get; init; } = false;
         public Func<string, bool>? Custom { get; init; }
         public string? CustomMessage { get; init; }
+        public bool ShouldBeHidden { get; init; } = false;
+        public string HiddenSymbol { get; init; } = string.Empty;
     }
 
     private protected string Read(string input, PromptOptions? options = null)
@@ -20,10 +22,13 @@ public abstract class Prompt
         var removeWhitespaces = options?.RemoveWhitespaces ?? false;
         var shouldBeNumber = options?.ShouldBeNumber ?? false;
         var shouldBeSingleWord = options?.ShouldBeSingleWord ?? false;
+        var shouldBeHidden = options?.ShouldBeHidden ?? false;
+        var hiddenSymbol = options?.HiddenSymbol ?? string.Empty;
+
 
         ConsoleWritter.Write(input, true);
 
-        var data = Console.ReadLine();
+        var data = ConsoleReader.ReadLine(shouldBeHidden, hiddenSymbol);
 
         data ??= "";
 
