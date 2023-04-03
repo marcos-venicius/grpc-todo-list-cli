@@ -11,7 +11,11 @@ public sealed class AccountLoginPrompt : Prompt
             RemoveWhitespaces = true
         });
 
-        var password = Read("password: ");
+        var password = Read("password: ", new PromptOptions
+        {
+            ShouldBeHidden = true,
+            HiddenSymbol = "*"
+        });
 
         return new AccountLoginPromptOutput(username, password);
     }
