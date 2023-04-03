@@ -25,12 +25,9 @@ public abstract class Prompt
         var shouldBeHidden = options?.ShouldBeHidden ?? false;
         var hiddenSymbol = options?.HiddenSymbol ?? string.Empty;
 
-
         ConsoleWritter.Write(input, true);
 
         var data = ConsoleReader.ReadLine(shouldBeHidden, hiddenSymbol);
-
-        data ??= "";
 
         if (!allowEmpty)
         {
