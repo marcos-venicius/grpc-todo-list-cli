@@ -1,4 +1,4 @@
-<h1 align="center">GRP Todo List CLI</h1>
+<h1 align="center">gRPC Todo List CLI</h1>
 
 <br />
 <br />
