@@ -1,4 +1,22 @@
-# Todo list as CLI
+<h1 align="center">GRP Todo List CLI</h1>
+
+<br />
+<br />
+
+<div align="center">
+  <i>
+    Your todo list as a command line application!
+  </i>
+</div>
+
+<br />
+<br />
+
+<div align="center">
+  
+  [![Test GrpcTodo.Server](https://github.com/marcos-venicius/grpc-todo-list-cli/actions/workflows/test-server.yml/badge.svg)](https://github.com/marcos-venicius/grpc-todo-list-cli/actions/workflows/test-server.yml)
+  
+</div>
 
 <div align="center">
   <img src="./docs/images/structure.png">
