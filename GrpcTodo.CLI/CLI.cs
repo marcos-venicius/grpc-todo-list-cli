@@ -23,6 +23,8 @@ public sealed class CLI
             "--help",
             new ParamDetail("Help", "Get command help")
         );
+
+        _argsParams.Set("--full", new ParamDetail("Full", "View full task data"));
     }
 
     public async Task Run()

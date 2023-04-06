@@ -38,7 +38,7 @@ internal class ActionRunner
         _aliasListUseCase = new AliasListUseCase(configsManager, commandReader);
         _aliasRemoveUseCase = new AliasRemoveUseCase(configsManager, commandReader);
         _taskCreateUseCase = new TaskCreateUseCase(configsManager);
-        _taskListUseCase = new TaskListUseCase(configsManager);
+        _taskListUseCase = new TaskListUseCase(configsManager, parameters);
     }
 
     public Task Run(Command? action)

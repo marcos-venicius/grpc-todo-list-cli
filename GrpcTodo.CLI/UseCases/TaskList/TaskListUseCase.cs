@@ -1,4 +1,6 @@
-﻿using Grpc.Core;
+﻿using System.Text;
+
+using Grpc.Core;
 using Grpc.Net.Client;
 
 using GrpcTodo.CLI.Lib;
@@ -11,8 +13,11 @@ namespace GrpcTodo.CLI.UseCases.TaskList;
 
 public class TaskListUseCase : UseCase
 {
-    public TaskListUseCase(ConfigsManager configsManager) : base(configsManager)
+    private readonly Parameters _parameters;
+
+    public TaskListUseCase(ConfigsManager configsManager, Parameters parameters) : base(configsManager)
     {
+        _parameters = parameters;
     }
 
     public override async Task ExecuteAsync()
@@ -42,12 +47,30 @@ public class TaskListUseCase : UseCase
             ConsoleWritter.WriteWithColor("* uncompleted", ConsoleColor.White);
             Console.WriteLine();
 
+            StringBuilder sb = new();
+
             foreach (var task in tasks)
             {
+                var id = task.Id[0..4];
+
+                sb.Append("- ");
+
+                if (_parameters.Has("--full"))
+                {
+                    var createdAt = new DateTime(task.CreatedAt);
+
+                    sb.Append($"[{id}]    ");
+                    sb.Append($"[{createdAt:MM/dd HH:mm}]    ");
+                }
+
+                sb.Append(task.Name);
+
                 if (task.Completed)
-                    ConsoleWritter.WriteWithColor($"[{task.Id[0..4]}]    {task.Name}", ConsoleColor.Green);
+                    ConsoleWritter.WriteWithColor(sb.ToString(), ConsoleColor.Green);
                 else
-                    ConsoleWritter.WriteWithColor($"[{task.Id[0..4]}]    {task.Name}", ConsoleColor.White);
+                    ConsoleWritter.WriteWithColor(sb.ToString(), ConsoleColor.White);
+
+                sb.Clear();
             }
 
             Console.WriteLine();
