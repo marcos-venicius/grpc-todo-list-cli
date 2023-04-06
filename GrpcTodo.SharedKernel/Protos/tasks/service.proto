@@ -6,6 +6,6 @@ import "task/responses.proto";
 package grpc_todo.shared_kernel.protos.tasks;
 
 
-service TaskItem {
+service TaskService {
     rpc Create(requests.TaskCreateRequest) returns (responses.TaskCreateResponse);
 }
