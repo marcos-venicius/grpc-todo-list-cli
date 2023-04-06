@@ -22,9 +22,9 @@
   <img src="./docs/images/structure.png">
 </div>
 
-## Demonstration (outdated)
+## Demonstration 
 
-[![view demo](./docs/images/video-placeholder.PNG)](https://www.youtube.com/watch?v=fMegmXOOVV0)
+[![view demo](https://user-images.githubusercontent.com/94018427/230500687-ff73463c-1ed1-4ae0-8af7-efc0dde6ef45.png)](https://www.youtube.com/watch?v=fMegmXOOVV0)
 
 A simple grpc todo list on live. your todo list as CLI.
 
@@ -114,7 +114,7 @@ to see all available commands type:
 gl --help
 ```
 
-![Available commands](./docs/images/available-commands.PNG "Available commands")
+![Available commands](https://user-images.githubusercontent.com/94018427/230500687-ff73463c-1ed1-4ae0-8af7-efc0dde6ef45.png "Available commands")
 
 - account
   - create `create new account`
