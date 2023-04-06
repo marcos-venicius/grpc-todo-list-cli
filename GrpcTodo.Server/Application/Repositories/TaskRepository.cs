@@ -44,6 +44,18 @@ public sealed class TaskRepository : ITaskRepository
         });
     }
 
+    public async Task<List<TaskItem>> ListAsync(Guid userId)
+    {
+        using var connection = _context.CreateConnection();
+
+        var items = await connection.QueryAsync<TaskItem>(TaskQueries.List, new
+        {
+            userId
+        });
+
+        return items.ToList();
+    }
+
     public Task UncompleteAsync(Guid id)
     {
         throw new NotImplementedException();

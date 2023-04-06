@@ -15,10 +15,8 @@ public sealed class AuthMiddleware : IAuthMiddleware
 
     public async Task Authenticate<TRequest>(Credentials credentials, TRequest request, Runner<TRequest, Task> runner) where TRequest : class
     {
-        var userOnDatabase = await _userRepository.FindByAccessTokenAsync(credentials.AccessToken);
-
-        if (userOnDatabase is null)
-            throw new UnauthorizedException("this account does not exists");
+        var userOnDatabase = await _userRepository.FindByAccessTokenAsync(credentials.AccessToken)
+            ?? throw new UnauthorizedException("this account does not exists");
 
         await runner(userOnDatabase.Id, request);
     }
@@ -27,11 +25,17 @@ public sealed class AuthMiddleware : IAuthMiddleware
         where TRequest : class
         where TResponse : notnull
     {
-        var userOnDatabase = await _userRepository.FindByAccessTokenAsync(credentials.AccessToken);
-
-        if (userOnDatabase is null)
-            throw new UnauthorizedException("this account does not exists");
+        var userOnDatabase = await _userRepository.FindByAccessTokenAsync(credentials.AccessToken)
+            ?? throw new UnauthorizedException("this account does not exists");
 
         return await runner(userOnDatabase.Id, request);
+    }
+
+    public async Task<TResponse> Authenticate<TResponse>(Credentials credentials, Runner<Task<TResponse>> runner) where TResponse : notnull
+    {
+        var userOnDatabase = await _userRepository.FindByAccessTokenAsync(credentials.AccessToken)
+            ?? throw new UnauthorizedException("this account does not exists");
+
+        return await runner(userOnDatabase.Id);
     }
 }

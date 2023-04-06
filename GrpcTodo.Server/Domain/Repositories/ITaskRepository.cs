@@ -9,4 +9,5 @@ public interface ITaskRepository
     public Task UpdateTaskNameAsync(Guid id, string name);
     public Task CompleteAsync(Guid id);
     public Task UncompleteAsync(Guid id);
+    public Task<List<TaskItem>> ListAsync(Guid userId);
 }

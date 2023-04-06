@@ -31,6 +31,7 @@ public static class DependencyInjection
         services.AddScoped<UserLoginUseCase>();
         services.AddScoped<UpdateTokenUseCase>();
         services.AddScoped<CreateTaskUseCase>();
+        services.AddScoped<ListAllTasksUseCase>();
 
         // middleware
         services.AddTransient<IAuthMiddleware, AuthMiddleware>();

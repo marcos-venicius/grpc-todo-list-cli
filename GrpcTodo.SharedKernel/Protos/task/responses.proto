@@ -5,3 +5,14 @@ package grpc_todo.shared_kernel.protos.tasks.responses;
 message TaskCreateResponse {
     string id = 1;
 }
+
+message TaskListResponseItem {
+    string id = 1;
+    string name = 2;
+    bool completed = 3;
+    int64 createdAt = 4;
+}
+
+message TaskListResponse {
+    repeated TaskListResponseItem Items = 1;
+}

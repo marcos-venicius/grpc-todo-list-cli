@@ -8,4 +8,5 @@ package grpc_todo.shared_kernel.protos.tasks;
 
 service TaskItem {
     rpc Create(requests.TaskCreateRequest) returns (responses.TaskCreateResponse);
+    rpc ListAll(requests.TaskListRequest) returns (responses.TaskListResponse);
 }
