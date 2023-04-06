@@ -1,4 +1,5 @@
 using Grpc.Core;
+
 using GrpcTodo.Server.Application.Common;
 using GrpcTodo.Server.Domain.Middleware;
 using GrpcTodo.Server.Domain.UseCases.Tasks;
@@ -12,12 +13,15 @@ public sealed class TaskGrpcService : TaskItem.TaskItemBase
 {
     private readonly IAuthMiddleware _authMiddleware;
     private readonly CreateTaskUseCase _createTaskUseCase;
+    private readonly ListAllTasksUseCase _listAllTasksUseCase;
 
     public TaskGrpcService(
         CreateTaskUseCase createTaskUseCase,
+        ListAllTasksUseCase listAllTasksUseCase,
         IAuthMiddleware authMiddleware)
     {
         _createTaskUseCase = createTaskUseCase;
+        _listAllTasksUseCase = listAllTasksUseCase;
         _authMiddleware = authMiddleware;
     }
 
@@ -33,5 +37,27 @@ public sealed class TaskGrpcService : TaskItem.TaskItemBase
         {
             Id = response.ToString()
         };
+    }
+
+    public override async Task<TaskListResponse> ListAll(TaskListRequest request, ServerCallContext context)
+    {
+        var credentials = new Credentials(request.AccessToken);
+
+        var response = await _authMiddleware.Authenticate(credentials, _listAllTasksUseCase.ExecuteAsync);
+
+        var tasks = new TaskListResponse();
+
+        foreach (var task in response)
+        {
+            tasks.Items.Add(new TaskListResponseItem
+            {
+                CreatedAt = task.CreatedAt,
+                Completed = task.Completed,
+                Name = task.Name,
+                Id = task.Id,
+            });
+        }
+
+        return tasks;
     }
 }

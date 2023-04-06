@@ -6,3 +6,7 @@ message TaskCreateRequest {
     string accessToken = 1;
     string name = 2;
 }
+
+message TaskListRequest {
+    string accessToken = 1;
+}

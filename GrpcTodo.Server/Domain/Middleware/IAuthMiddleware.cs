@@ -8,4 +8,6 @@ public interface IAuthMiddleware
     Task<TResponse> Authenticate<TRequest, TResponse>(Credentials credentials, TRequest request, Runner<TRequest, Task<TResponse>> runner)
         where TRequest : class
         where TResponse : notnull;
+    Task<TResponse> Authenticate<TResponse>(Credentials credentials, Runner<Task<TResponse>> runner)
+        where TResponse : notnull;
 }
