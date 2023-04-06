@@ -18,12 +18,12 @@
 
   <ItemGroup>
     <!-- user protos -->
-    <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/user/service.proto" />
+    <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/users/service.proto" />
     <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/user/requests.proto" />
     <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/user/responses.proto" />
 
     <!-- task protos -->
-    <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/task/service.proto" />
+    <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/tasks/service.proto" />
     <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/task/requests.proto" />
     <Protobuf ProtoRoot="./Protos/" GrpcServices="Both" Include="./Protos/task/responses.proto" />
   </ItemGroup>
