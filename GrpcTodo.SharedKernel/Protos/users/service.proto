@@ -5,7 +5,7 @@ import "user/responses.proto";
 
 package grpc_todo.shared_kernel.protos.user;
 
-service User {
+service UserService {
     rpc Create(requests.UserCreateRequest) returns (responses.UserCreateResponse);
     rpc Login(requests.UserLoginRequest) returns (responses.UserLoginResponse);
     rpc UpdateToken(requests.UserUpdateTokenRequest) returns (responses.UserUpdateTokenResponse);
