@@ -93,6 +93,7 @@ public sealed class Menu
                 },
                 new MenuOption {
                     Path = "list",
+                    IsImplemented = true,
                     Command = Command.ListAllTasks,
                     Description = "list all tasks"
                 },
