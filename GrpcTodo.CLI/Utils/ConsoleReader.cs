@@ -43,6 +43,8 @@ internal static class ConsoleReader
             }
         } while (key != ConsoleKey.Enter);
 
+        Console.WriteLine();
+
         return data.ToString();
     }
 }
