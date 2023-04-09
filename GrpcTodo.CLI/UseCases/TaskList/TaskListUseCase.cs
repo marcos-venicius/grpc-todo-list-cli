@@ -44,7 +44,7 @@ public class TaskListUseCase : UseCase
 
             ConsoleWritter.WriteInfo("==== ALL TASKS ===\n");
             ConsoleWritter.WriteWithColor("+ completed", ConsoleColor.Green);
-            ConsoleWritter.WriteWithColor("* uncompleted", ConsoleColor.White);
+            ConsoleWritter.WriteWithColor("- uncompleted", ConsoleColor.White);
             Console.WriteLine();
 
             StringBuilder sb = new();
@@ -53,7 +53,7 @@ public class TaskListUseCase : UseCase
             {
                 var id = task.Id[0..4];
 
-                sb.Append("- ");
+                sb.Append(task.Completed ? "+" : "- ");
 
                 if (_parameters.Has("--full"))
                 {
