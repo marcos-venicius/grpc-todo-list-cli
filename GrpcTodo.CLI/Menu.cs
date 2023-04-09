@@ -99,8 +99,9 @@ public sealed class Menu
                 },
                 new MenuOption {
                     Path = "delete",
+                    IsImplemented = true,
                     Command = Command.DeleteTask,
-                    Description = "delete a task"
+                    Description = "delete a task. example: gl delete task <task_id>"
                 },
             }
         }
