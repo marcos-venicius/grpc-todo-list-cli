@@ -39,7 +39,7 @@ public sealed class TaskCreateUseCase : UseCase
 
             var response = await client.CreateAsync(request);
 
-            ConsoleWritter.WriteSuccess($"Task [{response.Id}] created successfully");
+            ConsoleWritter.WriteSuccess($"Task [{response.Id[..4]}] created successfully");
         }
         catch (RpcException e)
         {
