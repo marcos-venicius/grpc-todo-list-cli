@@ -1,7 +1,5 @@
 ﻿using System.Text;
 
-using Grpc.Net.Client;
-
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases.Common;
 using GrpcTodo.CLI.Utils;
@@ -26,7 +24,7 @@ public class TaskListUseCase : UseCase
         if (accessToken is null)
             throw new ArgumentNullException(nameof(accessToken), "you are not authenticated");
 
-        using var channel = GrpcChannel.ForAddress(Settings.ServerAddress);
+        using var channel = GrpcConnection.CreateChannel();
 
         var client = new TaskItem.TaskItemClient(channel);
 

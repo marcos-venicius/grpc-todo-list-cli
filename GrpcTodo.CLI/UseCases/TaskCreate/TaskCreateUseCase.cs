@@ -1,5 +1,4 @@
 using Grpc.Core;
-using Grpc.Net.Client;
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.UseCases.Common;
 using GrpcTodo.CLI.Utils;
@@ -27,7 +26,7 @@ public sealed class TaskCreateUseCase : UseCase
             var prompt = createTaskPrompt.PromptName();
             var name = prompt.Name;
 
-            using var channel = GrpcChannel.ForAddress(Settings.ServerAddress);
+            using var channel = GrpcConnection.CreateChannel();
 
             var client = new TaskItem.TaskItemClient(channel);
 
