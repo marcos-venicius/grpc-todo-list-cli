@@ -35,6 +35,11 @@ public class TaskDeleteUseCase : UseCase
 
         var taskIdToDelete = taskDeletePrompt.PromptTask(tasks);
 
-        ConsoleWritter.Write($"the task [{taskIdToDelete}] will be deleted");
+        await client.DeleteAsync(new TaskDeleteRequest {
+            TaskId = taskIdToDelete,
+            AccessToken = accessToken
+        });
+
+        ConsoleWritter.WriteSuccess($"task [{taskIdToDelete}] deleted successfully");
     }
 }

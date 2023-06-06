@@ -6,6 +6,9 @@ message TaskCreateResponse {
     string id = 1;
 }
 
+message TaskDeleteResponse {
+}
+
 message TaskListResponseItem {
     string id = 1;
     string name = 2;

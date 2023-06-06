@@ -27,6 +27,7 @@ public static class DependencyInjection
         services.AddSingleton<IGuidGenerator, GuidGenerator>();
 
         // use cases
+        services.AddScoped<DeleteTaskUseCase>();
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<UserLoginUseCase>();
         services.AddScoped<UpdateTokenUseCase>();

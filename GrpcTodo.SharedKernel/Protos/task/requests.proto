@@ -10,3 +10,8 @@ message TaskCreateRequest {
 message TaskListRequest {
     string accessToken = 1;
 }
+
+message TaskDeleteRequest {
+    string accessToken = 1;
+    string taskId = 2;
+}
