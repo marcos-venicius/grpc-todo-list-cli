@@ -24,7 +24,7 @@
 
 ## Demonstration 
 
-[![Click to watch](https://user-images.githubusercontent.com/94018427/230503176-e7588a82-aad3-4069-be27-03d3e880dc57.png "Click to watch")](https://www.youtube.com/watch?v=3zKO9kfLmYI)
+![image](https://github.com/marcos-venicius/grpc-todo-list-cli/assets/94018427/cdcb2b0e-5dc3-474c-8b8c-502d7b292e7a)
 
 A simple grpc todo list on live. your todo list as CLI.
 
