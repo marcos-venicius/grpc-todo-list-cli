@@ -10,6 +10,9 @@ public abstract class Prompt
         public bool RemoveWhitespaces { get; init; } = false;
         public bool ShouldBeNumber { get; init; } = false;
         public bool ShouldBeSingleWord { get; init; } = false;
+        /// <summary>
+        /// returns true when should show the error, false when not
+        /// </summary>
         public Func<string, bool>? Custom { get; init; }
         public string? CustomMessage { get; init; }
         public bool ShouldBeHidden { get; init; } = false;

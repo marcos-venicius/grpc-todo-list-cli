@@ -8,6 +8,7 @@ using GrpcTodo.CLI.UseCases.AliasCreate;
 using GrpcTodo.CLI.UseCases.AliasList;
 using GrpcTodo.CLI.UseCases.AliasRemove;
 using GrpcTodo.CLI.UseCases.TaskCreate;
+using GrpcTodo.CLI.UseCases.TaskDelete;
 using GrpcTodo.CLI.UseCases.TaskList;
 
 namespace GrpcTodo.CLI;
@@ -23,6 +24,7 @@ internal class ActionRunner
     private readonly AliasRemoveUseCase _aliasRemoveUseCase;
     private readonly TaskCreateUseCase _taskCreateUseCase;
     private readonly TaskListUseCase _taskListUseCase;
+    private readonly TaskDeleteUseCase _taskDeleteUseCase;
 
     private readonly CommandReader _commandReader;
 
@@ -39,6 +41,7 @@ internal class ActionRunner
         _aliasRemoveUseCase = new AliasRemoveUseCase(configsManager, commandReader);
         _taskCreateUseCase = new TaskCreateUseCase(configsManager);
         _taskListUseCase = new TaskListUseCase(configsManager, parameters);
+        _taskDeleteUseCase = new TaskDeleteUseCase(configsManager);
     }
 
     public Task Run(Command? action)
@@ -65,14 +68,13 @@ internal class ActionRunner
                 return _taskCreateUseCase.ExecuteAsync();
             case Command.ListAllTasks:
                 return _taskListUseCase.ExecuteAsync();
+            case Command.DeleteTask:
+                return _taskDeleteUseCase.ExecuteAsync();
             case Command.CompleteTask:
                 Console.WriteLine("no implemented yet: complete task");
                 break;
             case Command.UncompleteTask:
                 Console.WriteLine("no implemented yet: uncomplete task");
-                break;
-            case Command.DeleteTask:
-                Console.WriteLine("no implemented yet: delete task");
                 break;
         }
 

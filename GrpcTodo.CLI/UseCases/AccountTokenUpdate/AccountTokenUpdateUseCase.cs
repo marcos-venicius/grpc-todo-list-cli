@@ -1,5 +1,4 @@
 using Grpc.Core;
-using Grpc.Net.Client;
 using GrpcTodo.SharedKernel.Protos.User;
 using GrpcTodo.SharedKernel.Protos.User.Requests;
 using GrpcTodo.CLI.UseCases.Common;
@@ -34,7 +33,7 @@ public sealed class AccountUpdateTokenUseCase : UseCase
 
         try
         {
-            using var channel = GrpcChannel.ForAddress(Settings.ServerAddress);
+            using var channel = GrpcConnection.CreateChannel();
 
             var client = new User.UserClient(channel);
 

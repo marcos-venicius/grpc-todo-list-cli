@@ -14,15 +14,18 @@ public sealed class TaskGrpcService : TaskItem.TaskItemBase
     private readonly IAuthMiddleware _authMiddleware;
     private readonly CreateTaskUseCase _createTaskUseCase;
     private readonly ListAllTasksUseCase _listAllTasksUseCase;
+    private readonly DeleteTaskUseCase _deleteTaskUseCase;
 
     public TaskGrpcService(
         CreateTaskUseCase createTaskUseCase,
         ListAllTasksUseCase listAllTasksUseCase,
+        DeleteTaskUseCase deleteTaskUseCase,
         IAuthMiddleware authMiddleware)
     {
         _createTaskUseCase = createTaskUseCase;
         _listAllTasksUseCase = listAllTasksUseCase;
         _authMiddleware = authMiddleware;
+        _deleteTaskUseCase = deleteTaskUseCase;
     }
 
     public override async Task<TaskCreateResponse> Create(TaskCreateRequest request, ServerCallContext context)
@@ -59,5 +62,16 @@ public sealed class TaskGrpcService : TaskItem.TaskItemBase
         }
 
         return tasks;
+    }
+
+    public override async Task<TaskDeleteResponse> Delete(TaskDeleteRequest request, ServerCallContext context)
+    {
+        var credentials = new Credentials(request.AccessToken);
+
+        var input = new DeleteTaskUseCaseInput(request.TaskId);
+
+        await _authMiddleware.Authenticate(credentials, input, _deleteTaskUseCase.ExecuteAsync);
+
+        return new TaskDeleteResponse();
     }
 }

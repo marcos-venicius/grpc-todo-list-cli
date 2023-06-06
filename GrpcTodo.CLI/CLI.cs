@@ -1,3 +1,5 @@
+using Grpc.Core;
+
 using GrpcTodo.CLI.Lib;
 using GrpcTodo.CLI.Models;
 using GrpcTodo.CLI.Services;
@@ -47,6 +49,14 @@ public sealed class CLI
             {
                 Menu.ShowAvailableOptions(parameters);
             }
+        }
+        catch (RpcException e)
+        {
+            ConsoleWritter.WriteError(e.Status.Detail ?? e.Message);
+        }
+        catch (ArgumentNullException e)
+        {
+            ConsoleWritter.WriteError(e.Message);
         }
         catch (ShowErrorMessageException e)
         {

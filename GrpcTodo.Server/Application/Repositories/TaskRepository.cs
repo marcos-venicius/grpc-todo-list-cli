@@ -34,6 +34,23 @@ public sealed class TaskRepository : ITaskRepository
         });
     }
 
+    public async Task DeleteAsync(Guid id)
+    {
+        using var connection = _context.CreateConnection();
+
+        await connection.ExecuteAsync(TaskQueries.Delete, new
+        {
+            id
+        });
+    }
+
+    public async Task<TaskItem?> FindByShortIdAsync(string id)
+    {
+        using var connection = _context.CreateConnection();
+
+        return await connection.QueryFirstOrDefaultAsync<TaskItem>(TaskQueries.FindByShortId, new { id = id + '%' });
+    }
+
     public async Task<TaskItem?> FindByNameAsync(string name)
     {
         using var connection = _context.CreateConnection();
